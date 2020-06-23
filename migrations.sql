@@ -1,5 +1,6 @@
-
+DROP TABLE rides;
 DROP TABLE users;
+
 CREATE TABLE users(
     id              INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     name            VARCHAR(255) NOT NULL,
@@ -9,7 +10,23 @@ CREATE TABLE users(
     hash            VARCHAR(255) NOT NULL,
     vehicalRegistrationNumber VARCHAR(255) DEFAULT NULL,
     licenseNumber VARCHAR(255) DEFAULT NULL,
+    driverStatus VARCHAR(255) DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE(email),
     UNIQUE(contactNumber)
+);
+
+CREATE TABLE rides(
+    id              INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1 ),
+    userId          INTEGER NOT NULL REFERENCES users(id),
+    driverId        INTEGER REFERENCES users(id),
+    status          VARCHAR(255) NOT NULL,
+    pickupLocationLongitude DOUBLE NOT NULL,
+    pickupLocationLatitiude DOUBLE NOT NULL,
+    destinationLongitude DOUBLE NOT NULL,
+    destinationLatitude DOUBLE NOT NULL,
+    fare DOUBLE NOT NULL,
+    requestedTimestamp TIMESTAMP NOT NULL,
+    endTimestamp TIMESTAMP NOT NULL,
+    PRIMARY KEY(id)
 );
