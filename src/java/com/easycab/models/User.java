@@ -28,6 +28,21 @@ public class User {
 
         }
     }
+    
+    public enum DriverStatus {
+        Available, Busy, Enroute;
+        
+        public static DriverStatus driverStatusFromString(String status) {
+            if (status == null) { return null; }
+            switch (status.toUpperCase()){
+                case "AVAILABLE": return Available;
+                case "BUSY": return Busy;
+                case "ENROUTE": return Enroute;
+                default: return null;
+            }
+        }
+    }
+    
     private int id;
     private String name;
     private String email;
@@ -36,7 +51,8 @@ public class User {
     private UserType type;
     private String vehicalRegistrationNumber;
     private String licenseNumber;
-
+    private DriverStatus driverStatus;
+    
     public static User fromResultSet(ResultSet set) throws SQLException {   
         User user = new User();
         user.setId(set.getInt("id"));
@@ -46,7 +62,8 @@ public class User {
         user.setType(UserType.userTypeFromString(set.getString("type")));
         user.setHashRaw(set.getString("hash"));
         user.setVehicalRegistrationNumber(set.getString("vehicalRegistrationNumber"));
-        user.setLicenseNumber(set.getString("licenseNumber"));
+        user.setLicenseNumber( set.getString("licenseNumber") );
+        user.setDriverStatus( DriverStatus.driverStatusFromString(set.getString("driverStatus")));
         return user;
     }
 
@@ -60,6 +77,14 @@ public class User {
 
     public String getVehicalRegistrationNumber() {
         return vehicalRegistrationNumber;
+    }
+
+    public DriverStatus getDriverStatus() {
+        return driverStatus;
+    }
+
+    public void setDriverStatus(DriverStatus driverStatus) {
+        this.driverStatus = driverStatus;
     }
 
     public void setVehicalRegistrationNumber(String vehicalRegistrationNumber) {
