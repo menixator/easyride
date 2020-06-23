@@ -64,7 +64,11 @@ public class LoginServlet extends BaseServlet {
         if (user.verifyHash(password)) {
             getSession(request).setUserType(EasyCabSession.SessionUserType.fromUserType(user.getType()));
             getSession(request).setUser(user);
-            ((HttpServletResponse) response).sendRedirect("/index.jsp");
+            if (user.getType() == User.UserType.Driver) {
+                ((HttpServletResponse) response).sendRedirect("/driver/dashboard.jsp");
+            } else {
+                ((HttpServletResponse) response).sendRedirect("/index.jsp");
+            }
         } else {
 
             ArrayList<String> errors = new ArrayList();

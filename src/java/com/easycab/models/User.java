@@ -49,9 +49,9 @@ public class User {
     private String contactNumber;
     private String hash;
     private UserType type;
-    private String vehicalRegistrationNumber;
-    private String licenseNumber;
-    private DriverStatus driverStatus;
+    private String vehicalRegistrationNumber = null;
+    private String licenseNumber = null;
+    private DriverStatus driverStatus = null;
     
     public static User fromResultSet(ResultSet set) throws SQLException {   
         User user = new User();

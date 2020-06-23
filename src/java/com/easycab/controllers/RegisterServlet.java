@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author a2-miljau
  */
 public class RegisterServlet extends BaseServlet {
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -28,19 +29,9 @@ public class RegisterServlet extends BaseServlet {
         response.sendRedirect("/public/register.jsp");
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected User validateUser(HttpServletRequest request, User.UserType type) {
 
-        ArrayList<String> errors = new ArrayList();
+        ArrayList<String> errors = (ArrayList<String>) request.getAttribute("errors");
 
         String email = request.getParameter("email");
         validateString("email", email, errors);
@@ -57,47 +48,72 @@ public class RegisterServlet extends BaseServlet {
         }
 
         if (errors.size() > 0) {
-            request.setAttribute("errors", errors);
-
+            return null;
         } else {
 
             if (UserDao.getUserByEmail(email) != null) {
-                errors.add(String.format("A user for the email '%s' already exists. Please login."));
-                request.getRequestDispatcher("/public/register.jsp").forward(request, response);
-                return;
+                errors.add(String.format("A user for the email '%s' already exists. Please login.", email));
+                return null;
             }
 
             User user = new User();
-            user.setType(User.UserType.Customer);
+            user.setType(type);
             user.setName(name);
             user.setEmail(email);
             try {
                 user.setHash(password);
             } catch (NoSuchAlgorithmException ex) {
                 errors.add("Failed to create user. Please try again!");
-                request.setAttribute("errors", errors);
-                request.getRequestDispatcher("/public/register.jsp").forward(request, response);
+                return null;
             }
             user.setContactNumber(contactNumber);
 
-            if (!UserDao.createUser(user)) {
-                errors.add("Failed to create user. Please try again!");
-                request.setAttribute("errors", errors);
-                request.getRequestDispatcher("/public/register.jsp").forward(request, response);
-            } else {
-                ArrayList<String> messages = new ArrayList();
-                messages.add(String.format("The user for '%s' has been created. Please log in.", email));
-                request.setAttribute("messages", messages);
-                request.getRequestDispatcher("/public/register.jsp").forward(request, response);
-            }
+            return user;
         }
     }
 
-    private void validateString(String prop, String value, ArrayList<String> errors) {
+    protected User persistUser(HttpServletRequest request, User user) {
+        ArrayList<String> errors = (ArrayList<String>) request.getAttribute("errors");
+
+        if (!UserDao.createUser(user)) {
+            errors.add("Failed to create user. Please try again!");
+            return null;
+        } else {
+            ArrayList<String> messages = (ArrayList<String>) request.getAttribute("messages");
+            messages.add(String.format("The user for '%s' has been created. Please log in.", user.getEmail()));
+
+            return user;
+        }
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        ArrayList<String> messages = new ArrayList();
+        ArrayList<String> errors = new ArrayList();
+        request.setAttribute("errors", errors);
+        request.setAttribute("messages", messages);
+
+        User user = validateUser(request, User.UserType.Customer);
+        if (user != null) {
+            persistUser(request, user);
+        }
+        request.getRequestDispatcher("/public/register.jsp").forward(request, response);
+    }
+
+    protected void validateString(String prop, String value, ArrayList<String> errors) {
         validateString(prop, value, errors, 255);
     }
 
-    private void validateString(String prop, String value, ArrayList<String> errors, int length) {
+    protected void validateString(String prop, String value, ArrayList<String> errors, int length) {
         if (value == null || value.length() == 0 || value.trim().length() == 0) {
             errors.add(String.format("%s cannot be empty!", prop));
         } else if (value.length() > length) {
