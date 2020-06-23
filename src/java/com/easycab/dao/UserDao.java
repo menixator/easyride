@@ -16,7 +16,7 @@ public class UserDao extends BaseDao {
         try {
             Connection con = getConnection();
             // Only one row will be returned because there is a unique constraint on email.
-            PreparedStatement statement = con.prepareStatement("SELECT id, name, email, contactNumber, type, hash, vehicalRegistrationNumber, licenseNumber FROM USERS WHERE email = ?");
+            PreparedStatement statement = con.prepareStatement("SELECT id, name, email, contactNumber, type, hash, vehicalRegistrationNumber, licenseNumber, driverStatus FROM USERS WHERE email = ?");
             statement.setString(1, email);
             ResultSet rs = statement.executeQuery();
             
