@@ -1,6 +1,6 @@
-package com.easycab.filters;
+package com.easyride.filters;
 
-import com.easycab.utils.EasyCabSession;
+import com.easyride.utils.EasyCabSession;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

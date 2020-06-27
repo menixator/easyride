@@ -2,7 +2,7 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
-        <filter-class>com.easycab.filters.AuthenticationFilter</filter-class>
+        <filter-class>com.easyride.filters.AuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
@@ -10,19 +10,23 @@
     </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.easycab.controllers.LoginServlet</servlet-class>
+        <servlet-class>com.easyride.controllers.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>com.easycab.controllers.RegisterServlet</servlet-class>
+        <servlet-class>com.easyride.controllers.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.easycab.controllers.LogoutServlet</servlet-class>
+        <servlet-class>com.easyride.controllers.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterDriverServlet</servlet-name>
-        <servlet-class>com.easycab.controllers.RegisterDriverServlet</servlet-class>
+        <servlet-class>com.easyride.controllers.RegisterDriverServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestAPickup</servlet-name>
+        <servlet-class>com.easyride.controllers.RequestAPickup</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>RegisterDriverServlet</servlet-name>
         <url-pattern>/admin/registerdriver</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestAPickup</servlet-name>
+        <url-pattern>/customer/request-a-pickup</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

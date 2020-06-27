@@ -1,7 +1,7 @@
-package com.easycab.controllers;
+package com.easyride.controllers;
 
-import com.easycab.dao.UserDao;
-import com.easycab.models.User;
+import com.easyride.dao.UserDao;
+import com.easyride.models.User;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;

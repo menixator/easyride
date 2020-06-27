@@ -1,4 +1,4 @@
-package com.easycab.models;
+package com.easyride.models;
 
 /**
  *

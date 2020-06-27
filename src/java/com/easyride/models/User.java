@@ -1,6 +1,6 @@
-package com.easycab.models;
+package com.easyride.models;
 
-import com.easycab.utils.Hasher;
+import com.easyride.utils.Hasher;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +30,7 @@ public class User {
     }
     
     public enum DriverStatus {
-        Available, Busy, Enroute;
+        Available, Busy, Enroute, Offline;
         
         public static DriverStatus driverStatusFromString(String status) {
             if (status == null) { return null; }
@@ -38,6 +38,7 @@ public class User {
                 case "AVAILABLE": return Available;
                 case "BUSY": return Busy;
                 case "ENROUTE": return Enroute;
+                case "OFFLINE": return Offline;
                 default: return null;
             }
         }

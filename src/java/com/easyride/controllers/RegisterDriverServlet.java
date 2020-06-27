@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.easycab.controllers;
+package com.easyride.controllers;
 
-import com.easycab.models.User;
+import com.easyride.models.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;

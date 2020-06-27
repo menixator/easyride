@@ -1,4 +1,4 @@
-package com.easycab.utils;
+package com.easyride.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

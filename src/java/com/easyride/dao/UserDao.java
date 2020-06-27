@@ -1,6 +1,6 @@
-package com.easycab.dao;
+package com.easyride.dao;
 
-import com.easycab.models.*;
+import com.easyride.models.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

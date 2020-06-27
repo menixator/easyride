@@ -1,8 +1,8 @@
-package com.easycab.controllers;
+package com.easyride.controllers;
 
-import com.easycab.dao.UserDao;
-import com.easycab.models.User;
-import com.easycab.utils.EasyCabSession;
+import com.easyride.dao.UserDao;
+import com.easyride.models.User;
+import com.easyride.utils.EasyCabSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;

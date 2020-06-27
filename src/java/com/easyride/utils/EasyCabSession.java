@@ -1,6 +1,6 @@
-package com.easycab.utils;
+package com.easyride.utils;
 
-import com.easycab.models.User;
+import com.easyride.models.User;
 
 /**
  *

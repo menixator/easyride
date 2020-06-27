@@ -1,6 +1,6 @@
-package com.easycab.controllers;
+package com.easyride.controllers;
 
-import com.easycab.utils.EasyCabSession;
+import com.easyride.utils.EasyCabSession;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
