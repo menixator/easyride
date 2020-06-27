@@ -19,7 +19,7 @@ public class BaseDao {
 
         }
         try {
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/easycab", "easycab", "easycab");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/easyride", "easyride", "easyride");
         } catch (SQLException ex) {
 
         }
