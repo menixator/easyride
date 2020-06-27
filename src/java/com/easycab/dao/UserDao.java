@@ -36,7 +36,7 @@ public class UserDao extends BaseDao {
         try {
             Connection con = getConnection();
             // Only one row will be returned because there is a unique constraint on email.
-            PreparedStatement statement = con.prepareStatement("INSERT INTO USERS(name, email, contactNumber, type, hash, licenseNumber, vehicalRegistrationNumber) VALUES(?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = con.prepareStatement("INSERT INTO USERS(name, email, contactNumber, type, hash, licenseNumber, vehicalRegistrationNumber, driverStatus) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getContactNumber());
@@ -44,7 +44,11 @@ public class UserDao extends BaseDao {
             statement.setString(5, user.getHash());
             statement.setString(6, user.getLicenseNumber());
             statement.setString(7, user.getVehicalRegistrationNumber());
-            statement.setString(8, user.getDriverStatus().toString());
+            String driverStatus = null;
+            if (user.getDriverStatus() != null){
+                driverStatus = user.getDriverStatus().toString();
+            }
+            statement.setString(8, driverStatus);
             statement.execute();
             return true;
         } catch (SQLException ex) {
