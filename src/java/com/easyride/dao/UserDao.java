@@ -32,6 +32,23 @@ public class UserDao extends BaseDao {
         }
     }
 
+    public static int getAvailableDriverCount() {
+        try {
+            Connection con = getConnection();
+            // Only one row will be returned because there is a unique constraint on email.
+            PreparedStatement statement = con.prepareStatement("SELECT COUNT(*) AS CNT FROM USERS WHERE type = 'Driver' AND driverStatus = 'Available'");
+            ResultSet rs = statement.executeQuery();
+
+            if (!rs.next()) {
+                return 0;
+            }
+            return rs.getInt("CNT");
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            return 0;
+        }
+    }
+
     public static boolean createUser(User user) {
         try {
             Connection con = getConnection();
@@ -45,7 +62,7 @@ public class UserDao extends BaseDao {
             statement.setString(6, user.getLicenseNumber());
             statement.setString(7, user.getVehicalRegistrationNumber());
             String driverStatus = null;
-            if (user.getDriverStatus() != null){
+            if (user.getDriverStatus() != null) {
                 driverStatus = user.getDriverStatus().toString();
             }
             statement.setString(8, driverStatus);
