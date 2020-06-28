@@ -58,6 +58,7 @@
             <div> Error: ${error}</div>
         </c:forEach>
 	<div id="message">Click on the map to select a pickup location</div>
+      </c:if>
     <div id="map"></div>
 
     <div id="right-panel">
@@ -74,7 +75,7 @@
 		</br>
 		<label for="distance">Distance(km)</label>
 		<input type="text" val="0" name="distance" id="distance">
-                <input type="submit" value="submit"/>
+                <input type="submit" value="submit" disabled id="requestSubmitButton"/>
 	</form>
     </div>
     <script>
@@ -126,6 +127,8 @@ function initMapTrue(lat, lng) {
 			markers.map(marker => marker.setMap(null));
 			markers.splice(0,markers.length);
 			document.querySelector("#message").remove();
+                        // Enable the submit button.
+                        document.querySelector("#requestSubmitButton").removeAttribute("disabled");
 		}
 	}
 
