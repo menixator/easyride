@@ -3,7 +3,7 @@
     Created on : Jun 27, 2020, 11:01:41 AM
     Author     : miljau_a
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -53,6 +53,10 @@
     </style>
   </head>
   <body>
+      <c:if test="${errors != null && errors.size() > 0}">
+        <c:forEach var="error" items="${errors}" >
+            <div> Error: ${error}</div>
+        </c:forEach>
 	<div id="message">Click on the map to select a pickup location</div>
     <div id="map"></div>
 
