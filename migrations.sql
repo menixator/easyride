@@ -22,11 +22,12 @@ CREATE TABLE rides(
     driverId        INTEGER REFERENCES users(id),
     status          VARCHAR(255) NOT NULL,
     pickupLocationLongitude DOUBLE NOT NULL,
-    pickupLocationLatitiude DOUBLE NOT NULL,
+    pickupLocationLatitude DOUBLE NOT NULL,
     destinationLongitude DOUBLE NOT NULL,
     destinationLatitude DOUBLE NOT NULL,
     fare DOUBLE NOT NULL,
     requestedTimestamp TIMESTAMP NOT NULL,
     endTimestamp TIMESTAMP NOT NULL,
+    distance DOUBLE NOT NULL,
     PRIMARY KEY(id)
 );
