@@ -1,25 +1,26 @@
 <%-- 
-    Document   : login.jsp
-    Created on : Jun 22, 2020, 12:04:04 PM
-    Author     : a2-miljau
+    Document   : login
+    Created on : Jun 21, 2020, 3:16:01 AM
+    Author     : Ahmed Rivaj
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <script src="../js/jquery-3.5.1.slim.min.js"></script>
-        <script src="../js/popper.min.js"></script>
-        <script src="../js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="../css/bootstrap.min.css">
-        <link rel="stylesheet" href="../css/login.css">
+        
+        <script src="js/jquery-3.5.1.slim.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/login.css">
     </head>
     <body>
-         <div class="wrapper fadeInDown">
+        <div class="wrapper fadeInDown">
   <div id="formContent">
     <!-- Tabs Titles -->
 
@@ -45,7 +46,7 @@
     <!-- Login Form -->
     <form method="POST" action="/public/login">
       <input type="text" id="email" class="fadeIn second" name="email" placeholder="login">
-      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+      <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
       <input type="submit" class="fadeIn fourth" value="Log In">
     </form>
 
@@ -59,3 +60,7 @@
 </div>
     </body>
 </html>
+
+
+
+
