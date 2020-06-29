@@ -71,7 +71,7 @@
 		<input type="text" id="pricePerKilometre" value="25">
 		</br>
 		<label for="price">Price(MVR)</label>
-		<input type="text" val="0" name="price" id="price">
+		<input type="text" val="0" name="fare" id="fare">
 		</br>
 		<label for="distance">Distance(km)</label>
 		<input type="text" val="0" name="distance" id="distance">
@@ -150,7 +150,7 @@ function initMapTrue(lat, lng) {
 		document.querySelector("#destinationLongitude").value = (destination.location || destination).lng();
 				
 		document.querySelector("#distance").value=(calculateDistance(directions)/1000).toFixed(3);
-		document.querySelector("#price").value=((calculateDistance(directions)/1000)*parseFloat(document.querySelector("#pricePerKilometre").value.trim())).toFixed(2);
+		document.querySelector("#fare").value=((calculateDistance(directions)/1000)*parseFloat(document.querySelector("#pricePerKilometre").value.trim())).toFixed(2);
 	});
 }
 
