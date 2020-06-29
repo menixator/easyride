@@ -50,6 +50,7 @@ public class Ride {
     private double fare;
     private Timestamp requestedTimestamp;
     private Timestamp endTimestamp;
+    private double distance;
 
     public static Ride fromResultSet(ResultSet set) throws SQLException {
         Ride ride = new Ride();
@@ -64,6 +65,7 @@ public class Ride {
         ride.setFare(set.getDouble("fare"));
         ride.setRequestedTimestamp(set.getTimestamp("requestedTimestamp"));
         ride.setEndTimestamp(set.getTimestamp("endTimestamp"));
+        ride.setDistance(set.getDouble("distance"));
         return ride;
     }
 
@@ -155,4 +157,11 @@ public class Ride {
         this.endTimestamp = endTimestamp;
     }
 
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
 }

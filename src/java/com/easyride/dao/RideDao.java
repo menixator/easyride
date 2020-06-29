@@ -20,7 +20,7 @@ public class RideDao extends BaseDao {
         try {
             Connection con = getConnection();
             // Only one row will be returned because there is a unique constraint on email.
-            PreparedStatement statement = con.prepareStatement("INSERT INTO rides(userId, driverId, status, pickupLocationLongitude, pickupLocationLatitiude, destinationLongitude, destinationLatitude, fare, requestedTimestamp, endTimestamp) VALUES(?  ,?  ,?  ,?  ,?  ,?  ,?  ,?  ,?  ,?)");
+            PreparedStatement statement = con.prepareStatement("INSERT INTO rides(userId, driverId, status, pickupLocationLongitude, pickupLocationLatitiude, destinationLongitude, destinationLatitude, fare, requestedTimestamp, endTimestamp, distance) VALUES(?  ,?  ,?  ,?  ,?  ,?  ,?  ,?  ,?  ,?, ?)");
             statement.setInt(1, ride.getUserId());
             statement.setInt(2, ride.getDriverId());
             statement.setString(3, ride.getStatus().toString());
@@ -31,6 +31,7 @@ public class RideDao extends BaseDao {
             statement.setDouble(8, ride.getFare());
             statement.setTimestamp(9, ride.getRequestedTimestamp());
             statement.setTimestamp(10, ride.getEndTimestamp());
+            statement.setDouble(11, ride.getDistance());
             statement.execute();
             return true;
         } catch (SQLException ex) {
@@ -42,7 +43,7 @@ public class RideDao extends BaseDao {
         try {
             Connection con = getConnection();
             // Only one row will be returned because there is a unique constraint on email.
-            PreparedStatement statement = con.prepareStatement("UPDATE rides userId=?, driverId=?, status=?, pickupLocationLongitude=?, pickupLocationLatitiude=?, destinationLongitude=?, destinationLatitude=?, fare=?, requestedTimestamp=?, endTimestamp=? WHERE id =?");
+            PreparedStatement statement = con.prepareStatement("UPDATE rides userId=?, driverId=?, status=?, pickupLocationLongitude=?, pickupLocationLatitiude=?, destinationLongitude=?, destinationLatitude=?, fare=?, requestedTimestamp=?, endTimestamp=?, distance=? WHERE id =?");
             statement.setInt(1, ride.getUserId());
             statement.setInt(2, ride.getDriverId());
             statement.setString(3, ride.getStatus().toString());
@@ -53,7 +54,8 @@ public class RideDao extends BaseDao {
             statement.setDouble(8, ride.getFare());
             statement.setTimestamp(9, ride.getRequestedTimestamp());
             statement.setTimestamp(10, ride.getEndTimestamp());
-            statement.setInt(11, ride.getId());
+            statement.setDouble(11, ride.getDistance());
+            statement.setInt(12, ride.getId());
             statement.executeUpdate();
             return true;
         } catch (SQLException ex) {
