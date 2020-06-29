@@ -57,15 +57,15 @@
         <c:forEach var="error" items="${errors}" >
             <div> Error: ${error}</div>
         </c:forEach>
-	<div id="message">Click on the map to select a pickup location</div>
       </c:if>
+    <div id="message">Click on the map to select a pickup location</div>
     <div id="map"></div>
 
     <div id="right-panel">
     	<form action="/customer/request-a-pickup" method="POST">
 		<input type="text" name="pickupLocationLatitude" readonly id="pickupLocationLatitude"></text>
 		<input type="text" name="pickupLocationLongitude" readonly id="pickupLocationLongitude"></text>
-		<input type="text" name="destinationLatitiude" readonly id="destinationLatitiude"></text>
+		<input type="text" name="destinationLatitude" readonly id="destinationLatitude"></text>
 		<input type="text" name="destinationLongitude" readonly id="destinationLongitude"></text>
 		</br>
 		<input type="text" id="pricePerKilometre" value="25">
@@ -146,7 +146,7 @@ function initMapTrue(lat, lng) {
 		document.querySelector("#pickupLocationLatitude").value =(  origin.location || origin ).lat();
 		document.querySelector("#pickupLocationLongitude").value = ( origin.location || origin).lng();
 
-		document.querySelector("#destinationLatitiude").value = (destination.location || destination).lat();
+		document.querySelector("#destinationLatitude").value = (destination.location || destination).lat();
 		document.querySelector("#destinationLongitude").value = (destination.location || destination).lng();
 				
 		document.querySelector("#distance").value=(calculateDistance(directions)/1000).toFixed(3);

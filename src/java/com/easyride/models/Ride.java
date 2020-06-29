@@ -44,7 +44,7 @@ public class Ride {
     private int driverId;
     private RideStatus status;
     private double pickupLocationLongitude;
-    private double pickupLocationLatitiude;
+    private double pickupLocationLatitude;
     private double destinationLongitude;
     private double destinationLatitude;
     private double fare;
@@ -58,7 +58,7 @@ public class Ride {
         ride.setDriverId(set.getInt("driverId"));
         ride.setStatus(RideStatus.rideStatusFromString(set.getString("status")));
         ride.setPickupLocationLongitude(set.getDouble("pickupLocationLongitude"));
-        ride.setPickupLocationLatitiude(set.getDouble("pickupLocationLatitiude"));
+        ride.setPickupLocationLatitude(set.getDouble("pickupLocationLatitiude"));
         ride.setDestinationLongitude(set.getDouble("destinationLongitude"));
         ride.setDestinationLatitude(set.getDouble("destinationLatitude"));
         ride.setFare(set.getDouble("fare"));
@@ -107,12 +107,12 @@ public class Ride {
         this.pickupLocationLongitude = pickupLocationLongitude;
     }
 
-    public double getPickupLocationLatitiude() {
-        return pickupLocationLatitiude;
+    public double getPickupLocationLatitude() {
+        return pickupLocationLatitude;
     }
 
-    public void setPickupLocationLatitiude(double pickupLocationLatitiude) {
-        this.pickupLocationLatitiude = pickupLocationLatitiude;
+    public void setPickupLocationLatitude(double pickupLocationLatitiude) {
+        this.pickupLocationLatitude = pickupLocationLatitiude;
     }
 
     public double getDestinationLongitude() {

@@ -25,7 +25,7 @@ public class RideDao extends BaseDao {
             statement.setInt(2, ride.getDriverId());
             statement.setString(3, ride.getStatus().toString());
             statement.setDouble(4, ride.getPickupLocationLongitude());
-            statement.setDouble(5, ride.getPickupLocationLatitiude());
+            statement.setDouble(5, ride.getPickupLocationLatitude());
             statement.setDouble(6, ride.getDestinationLongitude());
             statement.setDouble(7, ride.getDestinationLatitude());
             statement.setDouble(8, ride.getFare());
@@ -47,7 +47,7 @@ public class RideDao extends BaseDao {
             statement.setInt(2, ride.getDriverId());
             statement.setString(3, ride.getStatus().toString());
             statement.setDouble(4, ride.getPickupLocationLongitude());
-            statement.setDouble(5, ride.getPickupLocationLatitiude());
+            statement.setDouble(5, ride.getPickupLocationLatitude());
             statement.setDouble(6, ride.getDestinationLongitude());
             statement.setDouble(7, ride.getDestinationLatitude());
             statement.setDouble(8, ride.getFare());
