@@ -58,6 +58,12 @@
             <div> Error: ${error}</div>
         </c:forEach>
       </c:if>
+      <c:if test="${messages != null && messages.size() > 0}">
+            <c:forEach var="message" items="${messages}" >
+                <div> ${message}</div>
+            </c:forEach>
+
+     </c:if>
     <div id="message">Click on the map to select a pickup location</div>
     <div id="map"></div>
 

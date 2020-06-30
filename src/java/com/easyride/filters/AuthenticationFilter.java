@@ -43,11 +43,7 @@ public class AuthenticationFilter implements Filter {
         } else {
             appSession = (EasyCabSession) session.getAttribute(EasyCabSession.ATTR_NAME);
         }
-        
-        if (appSession.getUser() != null){
-            appSession.setUser( UserDao.getUserByEmail(appSession.getUser().getEmail()));
-        } 
-
+ 
         // If the user is logged in and tries to get to the login page again, redirect to the index page.
         if (appSession.getUserType() == EasyCabSession.SessionUserType.Anonymous && httpRequest.getRequestURI().equals("/public/index.jsp")) {
             httpResponse.sendRedirect("/public/login.jsp");

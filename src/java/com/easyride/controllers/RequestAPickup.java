@@ -66,6 +66,7 @@ public class RequestAPickup extends BaseServlet {
         ride.setDestinationLongitude(destinationLongitude);
         ride.setFare(fare);
         ride.setDistance(distance);
+        ride.setUserId(getSession(request).getUser().getId());
         
         
         if( UserDao.getAvailableDriverCount() == 0 ){
