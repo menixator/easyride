@@ -66,7 +66,10 @@ public class AuthenticationFilter implements Filter {
         } else if (httpRequest.getRequestURI().startsWith("/driver") && appSession.getUserType() != EasyCabSession.SessionUserType.Driver) {
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
-        } else {
+        } else if (httpRequest.getRequestURI().startsWith("/customer") && appSession.getUserType() != EasyCabSession.SessionUserType.Customer) {
+            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }  else {
             chain.doFilter(request, response);
             return;
         }
