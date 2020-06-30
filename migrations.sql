@@ -27,7 +27,7 @@ CREATE TABLE rides(
     destinationLatitude DOUBLE NOT NULL,
     fare DOUBLE NOT NULL,
     requestedTimestamp TIMESTAMP NOT NULL,
-    endTimestamp TIMESTAMP NOT NULL,
+    endTimestamp TIMESTAMP,
     distance DOUBLE NOT NULL,
     PRIMARY KEY(id)
 );
