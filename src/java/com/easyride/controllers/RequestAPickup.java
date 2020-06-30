@@ -34,6 +34,7 @@ public class RequestAPickup extends BaseServlet {
         String value = request.getParameter(paramName);
         if (value == null) {
             errors.add(String.format("%s should not be empty.", properName));
+            return null;
         }
         try {
             double doubleValue = Double.parseDouble(value);
