@@ -54,7 +54,7 @@ public class RequestAPickup extends BaseServlet {
         request.setAttribute("messages", messages);
         Double pickupLocationLatitude = validateDouble(request, "pickupLocationLatitude", "pickupLocationLatitude", errors);
         Double pickupLocationLongitude = validateDouble(request, "pickupLocationLongitude", "pickupLocationLongitude", errors);
-        Double destinationLatitude = validateDouble(request, "destinationLatitiude", "destinationLatitude", errors);
+        Double destinationLatitude = validateDouble(request, "destinationLatitude", "destinationLatitude", errors);
         Double destinationLongitude = validateDouble(request, "destinationLongitude", "destinationLongitude", errors);
         Double fare = validateDouble(request, "fare", "fare", errors);
         Double distance = validateDouble(request, "distance", "distance", errors);
@@ -73,6 +73,7 @@ public class RequestAPickup extends BaseServlet {
         }
         
         if (errors.size() == 0){
+            
             RideDao.createRide(ride);
             messages.add("Ride requested successfully!");
         }
