@@ -53,9 +53,9 @@ public class UserDao extends BaseDao {
         try {
             Connection con = getConnection();
             PreparedStatement statement = con.prepareStatement("UPDATE users set driverStatus =?  WHERE id =?");
-            statement.executeUpdate();
             statement.setString(1, newStatus.toString());
             statement.setInt(2, user.getId());
+            statement.executeUpdate();
             return true;
         } catch (SQLException ex) {
             return false;

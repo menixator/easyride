@@ -41,7 +41,9 @@ public class SetDriverStatusServlet extends BaseServlet {
         EasyCabSession session = getSession(request);
         User driver = session.getUser();
         if (status != null){
+            driver.setDriverStatus(status);
             UserDao.setDriverStatus(driver, status);
+            
         }
         response.sendRedirect("/driver/dashboard.jsp");
     }
