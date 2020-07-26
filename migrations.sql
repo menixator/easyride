@@ -1,5 +1,7 @@
+DROP TABLE notifs;
 DROP TABLE rides;
 DROP TABLE users;
+
 
 CREATE TABLE users(
     id              INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
@@ -29,5 +31,14 @@ CREATE TABLE rides(
     requestedTimestamp TIMESTAMP NOT NULL,
     endTimestamp TIMESTAMP,
     distance DOUBLE NOT NULL,
+    PRIMARY KEY(id)
+);
+
+-- ride status change
+CREATE TABLE notifs(
+    id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY( START WITH 1, INCREMENT BY 1),
+    type VARCHAR(255) NOT NULL,
+    rideId INTEGER NOT NULL REFERENCES rides(id),
+    createdTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id)
 );
