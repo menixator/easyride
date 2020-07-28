@@ -54,7 +54,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                     </div>
-                    <input name="emailAddress" class="form-control" placeholder="Email address" type="email">
+                    <input name="email" class="form-control" placeholder="Email address" type="email">
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
