@@ -28,6 +28,22 @@
         <servlet-name>RequestAPickup</servlet-name>
         <servlet-class>com.easyride.controllers.RequestAPickup</servlet-class>
     </servlet>
+    
+    <servlet>
+    <servlet-name>NotifService</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>com.easyride.notifservice</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NotifService</servlet-name>
+    <url-pattern>/notifs</url-pattern>
+  </servlet-mapping>
+  
+  
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/public/login</url-pattern>

@@ -5,10 +5,14 @@
  */
 package com.easyride.dao;
 
+import static com.easyride.dao.BaseDao.getConnection;
 import com.easyride.models.Notif;
+import com.easyride.models.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -27,6 +31,25 @@ public class NotifDao extends BaseDao {
         } catch (SQLException ex) {
             System.out.println(ex.toString());
             return false;
+        }
+    }
+
+    public static ArrayList<Notif> getNotifsForUserSince(User user, long since) {
+        ArrayList<Notif> notifs = new ArrayList<>();
+
+        try {
+            Connection con = getConnection();
+            // Only one row will be returned because there is a unique constraint on email.
+            PreparedStatement statement = con.prepareStatement("SELECT notif.* FROM notifs notif LEFT JOIN rides ride on ride.id = notif.rideId LEFT JOIN  users u ON u.id = ride.userId OR u.id = ride.driverId WHERE u.id = ? AND notif.createdTimestamp >= ?");
+            statement.setInt(1, user.getId());
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                notifs.add(Notif.fromResultSet(rs));
+            }
+            return notifs;
+        } catch (SQLException ex) {
+            return notifs;
         }
     }
 }
