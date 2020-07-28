@@ -66,6 +66,8 @@ public class LoginServlet extends BaseServlet {
             getSession(request).setUser(user);
             if (user.getType() == User.UserType.Driver) {
                 ((HttpServletResponse) response).sendRedirect("/driver/dashboard.jsp");
+            } else if (user.getType() == User.UserType.Customer) {
+                ((HttpServletResponse) response).sendRedirect("/customer/request-a-pickup.jsp");
             } else {
                 ((HttpServletResponse) response).sendRedirect("/index.jsp");
             }

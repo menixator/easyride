@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author a2-miljau
  */
 public class LogoutServlet extends HttpServlet {
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -26,10 +27,17 @@ public class LogoutServlet extends HttpServlet {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         httpRequest.removeAttribute(EasyCabSession.ATTR_NAME);
         ((HttpServletResponse) response).sendRedirect("/public/login.jsp");
-        
+
     }
 
-  
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        httpRequest.removeAttribute(EasyCabSession.ATTR_NAME);
+        ((HttpServletResponse) response).sendRedirect("/public/login.jsp");
+
+    }
 
     /**
      * Returns a short description of the servlet.
