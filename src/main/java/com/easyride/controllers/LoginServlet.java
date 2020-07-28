@@ -55,7 +55,7 @@ public class LoginServlet extends BaseServlet {
 
         if (user == null) {
             ArrayList<String> errors = new ArrayList();
-            errors.add("The username or password is incorrect");
+            errors.add("The Email or Password is Incorrect.");
             request.setAttribute("errors", errors);
             request.getRequestDispatcher("/public/login.jsp").forward(request, response);
             return;
@@ -72,7 +72,7 @@ public class LoginServlet extends BaseServlet {
         } else {
 
             ArrayList<String> errors = new ArrayList();
-            errors.add("The username or password is incorrect.");
+            errors.add("The Email or Password is Incorrect.");
             request.setAttribute("errors", errors);
             request.getRequestDispatcher("/public/login.jsp").forward(request, response);
             return;
