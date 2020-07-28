@@ -34,16 +34,17 @@ public class RegisterServlet extends BaseServlet {
         ArrayList<String> errors = (ArrayList<String>) request.getAttribute("errors");
 
         String email = request.getParameter("email");
-        validateString("email", email, errors);
+        validateString("Email", email, errors);
 
         String name = request.getParameter("name");
-        validateString("name", name, errors);
+        validateString("Name", name, errors);
         String contactNumber = request.getParameter("contactNumber");
-        validateString("contactNumber", contactNumber, errors);
+        validateString("Contact Number", contactNumber, errors);
         String password = request.getParameter("password");
-        validateString("password", password, errors);
+        validateString("Password", password, errors);
+        
         String passwordAgain = request.getParameter("passwordAgain");
-        if (!passwordAgain.equals(password)) {
+        if (!passwordAgain.equals(password) && errors.size() == 0) {
             errors.add("The passwords do not match!");
         }
 
@@ -114,6 +115,9 @@ public class RegisterServlet extends BaseServlet {
     }
 
     protected void validateString(String prop, String value, ArrayList<String> errors, int length) {
+        if (errors.size()> 0) {
+            return;
+        }
         if (value == null || value.length() == 0 || value.trim().length() == 0) {
             errors.add(String.format("%s cannot be empty!", prop));
         } else if (value.length() > length) {
