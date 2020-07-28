@@ -52,10 +52,10 @@ public class RegisterDriverServlet extends RegisterServlet {
         
         User user = validateUser(request, User.UserType.Driver);
         String licenseNumber = request.getParameter("licenseNumber");
-        validateString("licenseNumber", licenseNumber, errors);
+        validateString("License Number", licenseNumber, errors);
         
         String vehicalRegistrationNumber = request.getParameter("vehicalRegistrationNumber");
-        validateString("vehicalRegistrationNumber", vehicalRegistrationNumber, errors);
+        validateString("Vehical Registration Number", vehicalRegistrationNumber, errors);
         
         if (errors.isEmpty() && user != null) {
             user.setLicenseNumber(licenseNumber);
