@@ -13,13 +13,35 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Driver Dashboard Page</title>
+        <title>Driver Dashboard | EasyRide </title>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
     </head>
     <body>
         <%
             EasyCabSession appSession = (EasyCabSession) session.getAttribute(EasyCabSession.ATTR_NAME);
             User user = appSession.getUser();
         %> 
+         <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex">
+            <div class="d-flex flex-grow-1">
+                <span class="w-100 d-lg-none d-block"></span>
+                <a class="navbar-brand d-none d-lg-inline-block" href="#">
+                    EasyRide
+                </a>
+            </div>
+            <div class="collapse navbar-collapse text-right align-items-end flex-column">
+                <div class="d-flex">
+                    <span class="navbar-text pr-2">
+                        Logged in as <%=user.getName()%>
+                    </span>
+
+                    <form class="form-inline my-2 my-lg-0" method="POST" action="/logout">
+                        <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+                    </form>
+                </div>
+
+            </div> 
+        </nav>
         <h1>Driver Dashboard</h1>
                 <div>${user.getDriverStatus().toString()}</div>
         <c:if test="${user.getDriverStatus() == User.DriverStatus.Enroute } ">
