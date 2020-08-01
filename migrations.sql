@@ -42,6 +42,6 @@ CREATE TABLE notifs(
     PRIMARY KEY(id)
 );
 INSERT INTO USERS(NAME, EMAIL, CONTACTNUMBER, TYPE, HASH, VEHICALREGISTRATIONNUMBER, LICENSENUMBER, DRIVERSTATUS)
-VALUES('admin', 'admin@easycab', '', 'Admin', '21232f297a57a5a743894a0e4a801fc3', NULL, NULL, NULL),
-('driver', 'driver@easycab', '', 'Driver', 'e2d45d57c7e2941b65c6ccd64af4223e', '000', '000', 'Offline'),
-('customer', 'customer@easycab', '', 'Customer', '91ec1f9324753048c0096d036a694f86', NULL, NULL, NULL);
+VALUES('admin', 'admin@easyride', '', 'Admin', '21232F297A57A5A743894A0E4A801FC3', NULL, NULL, NULL),
+('driver', 'driver@easyride', '', 'Driver', 'E2D45D57C7E2941B65C6CCD64AF4223E', '000', '000', 'Offline'),
+('customer', 'customer@easyride', '', 'Customer', '91EC1F9324753048C0096D036A694F86', NULL, NULL, NULL);
