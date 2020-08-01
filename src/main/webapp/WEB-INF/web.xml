@@ -43,6 +43,19 @@
     <url-pattern>/notifs</url-pattern>
   </servlet-mapping>
   
+     <servlet>
+    <servlet-name>DriverStatusService</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>com.easyride.driverstatusservice</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DriverStatusService</servlet-name>
+    <url-pattern>/driver/status</url-pattern>
+  </servlet-mapping>
   
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
