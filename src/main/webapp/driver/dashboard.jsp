@@ -21,6 +21,7 @@
         <%
             EasyCabSession appSession = (EasyCabSession) session.getAttribute(EasyCabSession.ATTR_NAME);
             User user = appSession.getUser();
+            String driverStatus = user.getDriverStatus().toString();
         %> 
          <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex">
             <div class="d-flex flex-grow-1">
@@ -43,7 +44,6 @@
             </div> 
         </nav>
         <h1>Driver Dashboard</h1>
-                <div>${user.getDriverStatus().toString()}</div>
         <c:if test="${user.getDriverStatus() == User.DriverStatus.Enroute } ">
             <%
                 Ride ride = RideDao.getActiveRideForDriver(user);
@@ -90,15 +90,36 @@
                 </script>
             </div>
         </c:if>
-        <form action="/driver/setstatus" method="POST">
-            <span>Status:</span>
-            <select name="driverStatus" id="driverStatus">
-                <option value="Busy">Busy</option>
-                <option value="Available">Available</option>
-            </select>
-
-            <input type="submit" value="Submit"/>
+        <form>
+            <div class="form-group">
+                <label for="driverStatus">Driver Status</label>
+                <select class="form-control" name="driverStatus" id="driverStatus">
+                    <option value="Busy" <%= driverStatus == "Busy" ? "selected" : ""%>>Busy</option>
+                    <option value="Available" <%= driverStatus == "Available" ? "selected" : ""%>>Available</option>
+                    <option value="Offline" <%= driverStatus == "Offline" ? "selected" : ""%>>Offline</option>
+                </select>
+            </div>
         </form> 
+                <script type="text/javascript">
+
+                   var driverStatus = document.querySelector("#driverStatus");
+            
+                    driverStatus.addEventListener("change",function(){
+                       console.log('onchange called');
+                     var selectedStatus = driverStatus.children[driverStatus.selectedIndex].value;
+                     
+                     var xhr = new XMLHttpRequest();
+                     xhr.open("POST", "/driver/status/" + selectedStatus, true);
+                     xhr.setRequestHeader("content-type","application/json");
+                     xhr.onreadystatechange  = function(){
+                         if (xhr.readyState === XMLHttpRequest.DONE) {
+                             driverStatus.disabled = false;
+                         }
+                     }
+                     driverStatus.disabled = true;
+                     xhr.send();
+                   });
+                </script>
 
     </body>
 </html>

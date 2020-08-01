@@ -54,7 +54,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>DriverStatusService</servlet-name>
-    <url-pattern>/driver/status</url-pattern>
+    <url-pattern>/driver/status/*</url-pattern>
   </servlet-mapping>
   
     <servlet-mapping>
