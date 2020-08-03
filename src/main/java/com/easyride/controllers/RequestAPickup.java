@@ -114,6 +114,6 @@ public class RequestAPickup extends BaseServlet {
         NotifDao.createNotif(driverInitialNotif);
         UserDao.setDriverStatus(driver, User.DriverStatus.Enroute);
         
-        httpResponse.sendRedirect("/customer/story?id=" + ride.getId());
+        httpResponse.sendRedirect("/customer/story.jsp?rideId=" + ride.getId());
     }
 }
