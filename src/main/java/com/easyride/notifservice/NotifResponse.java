@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class NotifResponse {
     private ArrayList<String> errors = new ArrayList();
     private ArrayList<NotifModel> notifs = new ArrayList();
+    private String currentRideStatus;
 
     public ArrayList<String> getErrors() {
         return errors;
@@ -32,5 +33,12 @@ public class NotifResponse {
     public void setNotifs(ArrayList<NotifModel> notifs) {
         this.notifs = notifs;
     }
-    
+
+    public String getCurrentRideStatus() {
+        return currentRideStatus;
+    }
+
+    public void setCurrentRideStatus(String currentRideStatus) {
+        this.currentRideStatus = currentRideStatus;
+    }
 }

@@ -103,11 +103,18 @@
                         document.querySelector("#content").appendChild(errorDiv);
                     });
                 }
-                (story.notifs|| []).filter(notif => !!~["CustomerInitialNotif"].indexOf(notif.type)).filter(notif => {
+                (story.notifs|| []).filter(notif => !!~["CustomerInitialNotif", "InProgressNotif", "WaitingForCustomerToEnterNotif", "RideEndedNotif"].indexOf(notif.type)).filter(notif => {
                     return [].slice.call(document.querySelector("#content").children).findIndex(child => child.getAttribute('data-id') == notif.id.toString()) == -1;
                 }).map(notif => {
 
                     switch(notif.type){
+                          case "RideEndedNotif": {
+                           var div = document.createElement('div');
+                           div.setAttribute('data-id', notif.id);
+                           div.className = "alert alert-info";
+                           div.textContent = "Hope you had a good ride!";
+                            return div;
+                        }
                         case "CustomerInitialNotif":
                             //{'driverName': 'driver', 'vehicalRegistrationNumber': '000'}
                            var data = JSON.parse(notif.data);
@@ -116,12 +123,44 @@
                            div.className = "alert alert-info";
                            div.textContent = "You driver " + data.driverName + " will be picking you up in their vehical with the registration number: " + data.vehicalRegisitrationNumber;
                             return div;
+                        case "InProgressNotif":
+                           var div = document.createElement('div');
+                           div.setAttribute('data-id', notif.id);
+                           div.className = "alert alert-info";
+                           div.textContent = "Enjoy the ride!";
+                            return div;
+                            
+                        case "WaitingForCustomerToEnterNotif":
+                            //{'driverName': 'driver', 'vehicalRegistrationNumber': '000'}
+                           var data = JSON.parse(notif.data);
+                           var div = document.createElement('div');
+                           div.setAttribute('data-id', notif.id);
+                           div.className = "alert alert-info";
+                           var span = document.createElement("span");
+                            div.appendChild(span);
+                            span.textContent = "Your driver is here!" ;
+                           if (story.currentRideStatus == "WaitingForCustomerToEnter"){
+                                var nextButton = document.createElement("button");
+                                nextButton.className = "btn btn-primary mt-3";
+                                nextButton.style.width = "100%";
+                                nextButton.textContent = "I have Entered/am Entering!";
+                                nextButton.addEventListener("click", function(event){
+                                    event.target.remove();
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("GET", "/notifs/setRideStatus?rideId=" + rideId.toString() + "&nextStatus=InProgress" , true);
+                                    xhr.setRequestHeader("content-type", "application/json");
+                                    xhr.send();
+                                })
+                                div.appendChild(nextButton);
+                            }
+                            return div;
+                            
                     default: return null;
                     }
                 }).filter(div => div != null).forEach(div => {;
                     document.querySelector("#content").appendChild(div);
                 });
-                setTimeout(refreshStory, 5000);
+                setTimeout(refreshStory, 10000);
             }
             
             function refreshStory(){

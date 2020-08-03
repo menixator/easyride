@@ -16,6 +16,7 @@ public class Ride {
         InProgress,
         // The ride has ended.
         Ended;
+
         /**
          * Coerces a string to a ride status
          *
@@ -23,6 +24,7 @@ public class Ride {
          * @return RideStatus|null
          */
         public static RideStatus rideStatusFromString(String status) {
+            if (status == null){ return null; }
             switch (status.toUpperCase()) {
                 case "WAITINGFORDRIVERTOARRIVE":
                     return RideStatus.WaitingForDriverToArrive;
@@ -32,6 +34,7 @@ public class Ride {
                     return RideStatus.InProgress;
                 case "ENDED":
                     return RideStatus.Ended;
+
                 default:
                     return null;
             }
@@ -58,7 +61,7 @@ public class Ride {
         ride.setDriverId(set.getInt("driverId"));
         ride.setStatus(RideStatus.rideStatusFromString(set.getString("status")));
         ride.setPickupLocationLongitude(set.getDouble("pickupLocationLongitude"));
-        ride.setPickupLocationLatitude(set.getDouble("pickupLocationLatitiude"));
+        ride.setPickupLocationLatitude(set.getDouble("pickupLocationLatitude"));
         ride.setDestinationLongitude(set.getDouble("destinationLongitude"));
         ride.setDestinationLatitude(set.getDouble("destinationLatitude"));
         ride.setFare(set.getDouble("fare"));
@@ -112,8 +115,8 @@ public class Ride {
         return pickupLocationLatitude;
     }
 
-    public void setPickupLocationLatitude(double pickupLocationLatitiude) {
-        this.pickupLocationLatitude = pickupLocationLatitiude;
+    public void setPickupLocationLatitude(double pickupLocationLatitude) {
+        this.pickupLocationLatitude = pickupLocationLatitude;
     }
 
     public double getDestinationLongitude() {

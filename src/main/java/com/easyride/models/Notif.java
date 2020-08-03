@@ -18,7 +18,8 @@ public class Notif {
     public enum NotifType {
         CustomerInitialNotif,
         DriverInitialNotif,
-        CustomerEnteredNotif,
+        WaitingForCustomerToEnterNotif,
+        InProgressNotif,
         RideEndedNotif;
 
         public static NotifType notifTypeFromString(String type) {
@@ -27,11 +28,12 @@ public class Notif {
                     return CustomerInitialNotif;
                 case "DRIVERINITIALNOTIF":
                     return DriverInitialNotif;
-                case "CUSTOMERENTEREDNOTIF":
-                    return CustomerEnteredNotif;
+                case "WAITINGFORCUSTOMERTOENTERNOTIF":
+                    return WaitingForCustomerToEnterNotif;
                 case "RIDEENDEDNOTIF":
                     return RideEndedNotif;
-
+                case "INPROGRESSNOTIF":
+                    return InProgressNotif;
                 default:
                     return null;
             }

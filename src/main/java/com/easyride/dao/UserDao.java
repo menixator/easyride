@@ -49,7 +49,21 @@ public class UserDao extends BaseDao {
         }
     }
 
-    public static boolean setDriverStatus( User user, User.DriverStatus newStatus) {
+    public static boolean setDriverStatusById(int driverId, User.DriverStatus newStatus) {
+        try {
+            Connection con = getConnection();
+            PreparedStatement statement = con.prepareStatement("UPDATE users set driverStatus =?  WHERE id =?");
+            statement.setString(1, newStatus.toString());
+            statement.setInt(2, driverId);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+
+    }
+
+    public static boolean setDriverStatus(User user, User.DriverStatus newStatus) {
         try {
             Connection con = getConnection();
             PreparedStatement statement = con.prepareStatement("UPDATE users set driverStatus =?  WHERE id =?");

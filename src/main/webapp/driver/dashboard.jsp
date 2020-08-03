@@ -88,7 +88,7 @@
                      xhr.onreadystatechange  = function(){
                          if (xhr.readyState === XMLHttpRequest.DONE) {
                             let card = document.querySelector("#activeRideCard"); 
-                            if (xhr.responseText == "null"){
+                            if (xhr.responseText == "null" || xhr.responseText == ""){
                                  card.style.visibility = "hidden";
                              } else {
                                  card.style.removeProperty("visibility");

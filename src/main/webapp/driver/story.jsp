@@ -106,9 +106,10 @@ function init() {
 				.forEach((errorDiv) => {
 					document.querySelector("#content").appendChild(errorDiv);
 				});
+                                return;
 		}
 		(story.notifs || [])
-			.filter((notif) => !!~["DriverInitialNotif"].indexOf(notif.type))
+			.filter((notif) => !!~["DriverInitialNotif", "InProgressNotif", "RideEndedNotif"].indexOf(notif.type))
 			.filter((notif) => {
 				return (
 					[].slice
@@ -120,6 +121,39 @@ function init() {
 			})
 			.map((notif) => {
 				switch (notif.type) {
+                                    case "RideEndedNotif": {
+                           var data = JSON.parse(notif.data);
+                           var div = document.createElement('div');
+                           div.setAttribute('data-id', notif.id);
+                           div.className = "alert alert-info";
+                           div.textContent = "The ride is now complete!";
+                            return div;
+                                    }
+                                    case "InProgressNotif": {
+                                       //{'driverName': 'driver', 'vehicalRegistrationNumber': '000'}
+                           var data = JSON.parse(notif.data);
+                           var div = document.createElement('div');
+                           div.setAttribute('data-id', notif.id);
+                           div.className = "alert alert-info";
+                           var span = document.createElement("span");
+                            div.appendChild(span);
+                            span.textContent = "Please take the customer to their destination!" ;
+                           if (story.currentRideStatus == "InProgress"){
+                                var nextButton = document.createElement("button");
+                                nextButton.className = "btn btn-primary mt-3";
+                                nextButton.style.width = "100%";
+                                nextButton.textContent = "I've dropped off the Customer!";
+                                nextButton.addEventListener("click", function(event){
+                                    event.target.remove();
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("GET", "/notifs/setRideStatus?rideId=" + rideId.toString() + "&nextStatus=Ended" , true);
+                                    xhr.setRequestHeader("content-type", "application/json");
+                                    xhr.send();
+                                })
+                                div.appendChild(nextButton);
+                            }
+                            return div;
+                                    }
 					case "DriverInitialNotif":
 						var data = JSON.parse(notif.data);
 						var div = document.createElement("div");
@@ -133,15 +167,20 @@ function init() {
 						mapDiv.id = "map";
 						div.append(mapDiv);
                                                 div.appendChild(document.createElement("hr"));
-                                                var nextButton = document.createElement("button");
-                                                nextButton.className = "btn btn-primary mt-3";
-                                                nextButton.style.width = "100%";
-                                                nextButton.textContent = "I'm there!";
-                                                nextButton.addEventListener("click", function(event){
-                                                    event.target.remove();
-                                                    
-                                                })
-                                                div.appendChild(nextButton);
+                                                if (story.currentRideStatus == "WaitingForDriverToArrive"){
+                                                    var nextButton = document.createElement("button");
+                                                    nextButton.className = "btn btn-primary mt-3";
+                                                    nextButton.style.width = "100%";
+                                                    nextButton.textContent = "I'm there!";
+                                                    nextButton.addEventListener("click", function(event){
+                                                        event.target.remove();
+                                                        var xhr = new XMLHttpRequest();
+                                                        xhr.open("GET", "/notifs/setRideStatus?rideId=" + rideId.toString() + "&nextStatus=WaitingForCustomerToEnter" , true);
+                                                        xhr.setRequestHeader("content-type", "application/json");
+                                                        xhr.send();
+                                                    })
+                                                    div.appendChild(nextButton);
+                                                }
 						var origin = data.pickup;
 						var dest = data.destination;
 						var map = new google.maps.Map(mapDiv, {
@@ -179,7 +218,7 @@ function init() {
 			.forEach((div) => {
 				document.querySelector("#content").appendChild(div);
 			});
-		setTimeout(refreshStory, 5000);
+		setTimeout(refreshStory, 10000);
 	}
 
 	function refreshStory() {

@@ -49,6 +49,24 @@ public class RideDao extends BaseDao {
         }
     }
 
+    public static Ride getRide(int id) {
+        try {
+            Connection con = getConnection();
+            // Only one row will be returned because there is a unique constraint on email.
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM rides where id = ?");
+            statement.setInt(1, id);
+            
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return Ride.fromResultSet(rs);
+            }
+            return null;
+        } catch (SQLException ex) {
+            System.out.println("a"+ ex.toString());
+            return null;
+        }
+    }
+
     public static Integer getActiveRideId(User driver) {
         try {
             Connection con = getConnection();
@@ -64,7 +82,6 @@ public class RideDao extends BaseDao {
         } catch (SQLException ex) {
             return null;
         }
-
     }
 
     public static User getNextDriver() {
@@ -87,7 +104,7 @@ public class RideDao extends BaseDao {
     public static Ride getActiveRideForDriver(User driver) {
         try {
             Connection con = getConnection();
-            PreparedStatement statement = con.prepareStatement("SELECT id, userId, driverId, status, pickupLocationLongitude, pickupLocationLatitiude, destinationLongitude, destinationLatitude, fare, requestedTimestamp, endTimestamp, distance where driverId = ? AND status='InProgress'");
+            PreparedStatement statement = con.prepareStatement("SELECT id, userId, driverId, status, pickupLocationLongitude, pickupLocationLatitude, destinationLongitude, destinationLatitude, fare, requestedTimestamp, endTimestamp, distance where driverId = ? AND status='InProgress'");
             statement.setInt(1, driver.getId());
             ResultSet set = statement.executeQuery();
 
@@ -105,7 +122,7 @@ public class RideDao extends BaseDao {
         try {
             Connection con = getConnection();
             // Only one row will be returned because there is a unique constraint on email.
-            PreparedStatement statement = con.prepareStatement("UPDATE rides userId=?, driverId=?, status=?, pickupLocationLongitude=?, pickupLocationLatitiude=?, destinationLongitude=?, destinationLatitude=?, fare=?, requestedTimestamp=?, endTimestamp=?, distance=? WHERE id =?");
+            PreparedStatement statement = con.prepareStatement("UPDATE rides SET userId=?, driverId=?, status=?, pickupLocationLongitude=?, pickupLocationLatitude=?, destinationLongitude=?, destinationLatitude=?, fare=?, requestedTimestamp=?, endTimestamp=?, distance=? WHERE id =?");
             statement.setInt(1, ride.getUserId());
             statement.setInt(2, ride.getDriverId());
             statement.setString(3, ride.getStatus().toString());
