@@ -5,8 +5,10 @@
  */
 package com.easyride.controllers;
 
+import com.easyride.dao.NotifDao;
 import com.easyride.dao.RideDao;
 import com.easyride.dao.UserDao;
+import com.easyride.models.Notif;
 import com.easyride.models.Ride;
 import com.easyride.models.User;
 import com.easyride.utils.EasyCabSession;
@@ -48,10 +50,19 @@ public class RequestAPickup extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ArrayList<String> messages = new ArrayList();
         ArrayList<String> errors = new ArrayList();
+        ArrayList<String> messages = new ArrayList();
         request.setAttribute("errors", errors);
         request.setAttribute("messages", messages);
+
+        if (UserDao.getAvailableDriverCount() == 0) {
+            errors.add("No drivers available. Please try again later.");
+            request.getRequestDispatcher("/customer/request-a-pickup.jsp").forward(request, response);
+            return;
+        }
+
+        User driver = RideDao.getNextDriver();
+
         Double pickupLocationLatitude = validateDouble(request, "pickupLocationLatitude", "pickupLocationLatitude", errors);
         Double pickupLocationLongitude = validateDouble(request, "pickupLocationLongitude", "pickupLocationLongitude", errors);
         Double destinationLatitude = validateDouble(request, "destinationLatitude", "destinationLatitude", errors);
@@ -59,7 +70,7 @@ public class RequestAPickup extends BaseServlet {
         Double fare = validateDouble(request, "fare", "fare", errors);
         Double distance = validateDouble(request, "distance", "distance", errors);
         Ride ride = new Ride();
-        ride.setStatus(Ride.RideStatus.Waiting);
+        ride.setStatus(Ride.RideStatus.WaitingForDriverToArrive);
         ride.setPickupLocationLatitude(pickupLocationLatitude);
         ride.setPickupLocationLongitude(pickupLocationLongitude);
         ride.setDestinationLatitude(destinationLatitude);
@@ -67,18 +78,37 @@ public class RequestAPickup extends BaseServlet {
         ride.setFare(fare);
         ride.setDistance(distance);
         ride.setUserId(getSession(request).getUser().getId());
-        
-        
-        if( UserDao.getAvailableDriverCount() == 0 ){
-            errors.add("No drivers available. Please try again later.");
-        }
-        
-        if (errors.size() == 0){
-            
+        ride.setDriverId(driver.getId());
+
+        if (errors.size() == 0) {
             RideDao.createRide(ride);
             messages.add("Ride requested successfully!");
+        } else {
+            request.getRequestDispatcher("/customer/request-a-pickup.jsp").forward(request, response);
+            return;
         }
-        request.getRequestDispatcher("/customer/request-a-pickup.jsp").forward(request, response);
+        // Redirect the user and inform the driver.
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        Notif customerInitialNotif = new Notif();
+        customerInitialNotif.setRideId(ride.getId());
+        customerInitialNotif.setType(Notif.NotifType.CustomerInitialNotif);
+        customerInitialNotif.setData("{'driverName': '" + driver.getName() + "', 'vehicalRegistrationNumber': '" + driver.getVehicalRegistrationNumber() + "'}");
+        NotifDao.createNotif(customerInitialNotif);
 
+        Notif driverInitialNotif = new Notif();
+        driverInitialNotif.setType(Notif.NotifType.DriverInitialNotif);
+        driverInitialNotif.setRideId(ride.getId());
+        driverInitialNotif.setData(
+                String.format("{'pickup': {'lng': %f, 'lat':%f}, 'destination': {'lng': %f, 'lat':%f}, 'fare': %f, 'customerName': '%s'}",
+                        ride.getPickupLocationLongitude(),
+                        ride.getPickupLocationLatitude(),
+                        ride.getDestinationLongitude(),
+                        ride.getDestinationLongitude(),
+                        ride.getFare(),
+                        getSession(request).getUser().getName()
+                ));
+        NotifDao.createNotif(driverInitialNotif);
+
+        httpResponse.sendRedirect("/customer/story?id=" + ride.getId());
     }
 }

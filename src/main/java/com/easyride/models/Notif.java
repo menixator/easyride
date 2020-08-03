@@ -16,12 +16,22 @@ import java.sql.Timestamp;
 public class Notif {
 
     public enum NotifType {
-        RideStatusChanged;
+        CustomerInitialNotif,
+        DriverInitialNotif,
+        CustomerEnteredNotif,
+        RideEndedNotif;
 
         public static NotifType notifTypeFromString(String type) {
             switch (type.toUpperCase()) {
-                case "RIDESTATUSCHANGED":
-                    return RideStatusChanged;
+                case "CUSTOMERINITIALNOTIF":
+                    return CustomerInitialNotif;
+                case "DRIVERINITIALNOTIF":
+                    return DriverInitialNotif;
+                case "CUSTOMERENTEREDNOTIF":
+                    return CustomerEnteredNotif;
+                case "RIDEENDEDNOTIF":
+                    return RideEndedNotif;
+
                 default:
                     return null;
             }
@@ -32,6 +42,7 @@ public class Notif {
     private int id;
     private NotifType type;
     private int rideId;
+    private String data;
     private Timestamp createdTimestamp;
 
     public int getId() {
@@ -40,6 +51,14 @@ public class Notif {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     public NotifType getType() {
@@ -69,6 +88,7 @@ public class Notif {
     public static Notif fromResultSet(ResultSet set) throws SQLException {
         Notif notif = new Notif();
         notif.setId(set.getInt("id"));
+        notif.setData(set.getString("data"));
         notif.setRideId(set.getInt("rideId"));
         notif.setType(NotifType.notifTypeFromString(set.getString("type")));
         notif.setCreatedTimestamp(set.getTimestamp("createdTimestamp"));

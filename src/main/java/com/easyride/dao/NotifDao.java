@@ -23,9 +23,10 @@ public class NotifDao extends BaseDao {
     public static boolean createNotif(Notif notif) {
         try {
             Connection con = getConnection();
-            PreparedStatement statement = con.prepareStatement("INSERT INTO notifs(type, rideId) VALUES(?, ?);");
+            PreparedStatement statement = con.prepareStatement("INSERT INTO notifs(type, rideId, data) VALUES(?, ?, ?)");
             statement.setString(1, notif.getType().toString());
             statement.setInt(2, notif.getRideId());
+            statement.setString(3, notif.getData());
             statement.execute();
             return true;
         } catch (SQLException ex) {
@@ -34,14 +35,13 @@ public class NotifDao extends BaseDao {
         }
     }
 
-    public static ArrayList<Notif> getNotifsForUserSince(User user, long since) {
+    public static ArrayList<Notif> getNotifsForRide(int rideId) {
         ArrayList<Notif> notifs = new ArrayList<>();
 
         try {
             Connection con = getConnection();
-            // Only one row will be returned because there is a unique constraint on email.
-            PreparedStatement statement = con.prepareStatement("SELECT notif.* FROM notifs notif LEFT JOIN rides ride on ride.id = notif.rideId LEFT JOIN  users u ON u.id = ride.userId OR u.id = ride.driverId WHERE u.id = ? AND notif.createdTimestamp >= ?");
-            statement.setInt(1, user.getId());
+            PreparedStatement statement = con.prepareStatement("SELECT notif.* FROM notifs notif where notif.rideId = ? ");
+            statement.setInt(1, rideId);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -49,7 +49,7 @@ public class NotifDao extends BaseDao {
             }
             return notifs;
         } catch (SQLException ex) {
-            return notifs;
+            return null;
         }
     }
 }

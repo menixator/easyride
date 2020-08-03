@@ -24,7 +24,7 @@ public class RideDao extends BaseDao {
         try {
             Connection con = getConnection();
             // Only one row will be returned because there is a unique constraint on email.
-            PreparedStatement statement = con.prepareStatement("INSERT INTO rides(userId, driverId, status, pickupLocationLongitude, pickupLocationLatitude, destinationLongitude, destinationLatitude, fare, requestedTimestamp, endTimestamp, distance) VALUES(?  ,?  ,?  ,?  ,?  ,?  ,?  ,?  ,?  ,?, ?)");
+            PreparedStatement statement = con.prepareStatement("INSERT INTO rides(userId, driverId, status, pickupLocationLongitude, pickupLocationLatitude, destinationLongitude, destinationLatitude, fare, requestedTimestamp, endTimestamp, distance) VALUES(?  ,?  ,?  ,?  ,?  ,?  ,?  ,?  ,?  ,?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, ride.getUserId());
             statement.setInt(2, ride.getDriverId());
             statement.setString(3, ride.getStatus().toString());
@@ -36,11 +36,33 @@ public class RideDao extends BaseDao {
             statement.setTimestamp(9, Timestamp.from(Instant.now()));
             statement.setTimestamp(10, ride.getEndTimestamp());
             statement.setDouble(11, ride.getDistance());
-            statement.execute();
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                ride.setId(rs.getInt(1));
+            }
+
             return true;
         } catch (SQLException ex) {
             System.out.println(ex.toString());
             return false;
+        }
+    }
+
+    public static User getNextDriver() {
+        try {
+            Connection con = getConnection();
+            // RIP no string literals. S
+            PreparedStatement statement = con.prepareStatement("SELECT usr.* FROM users usr LEFT JOIN ( select ride.driverId, MAX(ride.endTimestamp) as lastRideActivityTimestamp from rides ride GROUP BY ride.driverId ) rideOrdering ON rideOrdering.driverId = usr.id WHERE usr.type = 'Driver' and usr.driverStatus = 'Available' ORDER BY rideOrdering.lastRideActivityTimestamp ASC FETCH FIRST 1 ROWS ONLY");
+            ResultSet set = statement.executeQuery();
+
+            if (!set.next()) {
+                return null;
+            }
+
+            return User.fromResultSet(set);
+        } catch (SQLException ex) {
+            return null;
         }
     }
 

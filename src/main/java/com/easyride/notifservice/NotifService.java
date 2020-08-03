@@ -23,17 +23,22 @@ public class NotifService {
 
     @GET
     @Path("/")
-    public NotifResponse getNotifs(@QueryParam("since") long since,
+    public NotifResponse getNotifs(@QueryParam("rideId") int rideId,
             @Context HttpServletRequest request) {
-        // Session creation
-        HttpSession session = request.getSession(false);
-        EasyCabSession easyCabSession = (EasyCabSession) session.getAttribute(EasyCabSession.ATTR_NAME);
-        ArrayList<Notif> notifs = NotifDao.getNotifsForUserSince(easyCabSession.getUser(), since);
+
+        ArrayList<Notif> notifs = NotifDao.getNotifsForRide(rideId);
+        if (notifs == null) {
+            NotifResponse response = new NotifResponse();
+            ArrayList<String> errors = new ArrayList<>();
+            errors.add("Failed to retrieve notifs");
+            response.setErrors(errors);
+            return response;
+        }
         // Prime example of why java is a horrible language. There isnt a standardized way of mapping a list onto another
         // before java 8.
         ArrayList<NotifModel> newNotifs = new ArrayList();
-        for (Notif notif: notifs){
-            newNotifs.add(new NotifModel(notif.getId(), notif.getRideId(), notif.getCreatedTimestamp().getTime()));
+        for (Notif notif : notifs) {
+            newNotifs.add(new NotifModel(notif.getId(), notif.getRideId(), notif.getCreatedTimestamp().getTime(), notif.getData(), notif.getType().toString()));
         }
         NotifResponse response = new NotifResponse();
         response.setNotifs(newNotifs);
