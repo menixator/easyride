@@ -30,6 +30,11 @@
                     EasyRide
                 </a>
             </div>
+             <ul class="navbar-nav mr-auto">
+                 <li class="nav-item active">
+                     <a class="nav-link" href="/driver/dashboard.jsp">Dashboard<span class="sr-only">(current)</span></a>
+                 </li>
+             </ul>
             <div class="collapse navbar-collapse text-right align-items-end flex-column">
                 <div class="d-flex">
                     <span class="navbar-text pr-2">
