@@ -9,14 +9,13 @@ public class Ride {
     // An enum to represent the state of the ride.
     public enum RideStatus {
         // The customer is waiting for a pickup
-        Waiting,
+        WaitingForDriverToArrive,
+        // The driver is waiting for the customer
+        WaitingForCustomerToEnter,
         // The ride is in progress.
         InProgress,
         // The ride has ended.
-        Ended,
-        // No drivers accepted the request.
-        Failed;
-
+        Ended;
         /**
          * Coerces a string to a ride status
          *
@@ -25,14 +24,14 @@ public class Ride {
          */
         public static RideStatus rideStatusFromString(String status) {
             switch (status.toUpperCase()) {
-                case "WAITING":
-                    return RideStatus.Waiting;
+                case "WAITINGFORDRIVERTOARRIVE":
+                    return RideStatus.WaitingForDriverToArrive;
+                case "WAITINGFORCUSTOMERTOENTER":
+                    return RideStatus.WaitingForCustomerToEnter;
                 case "INPROGRESS":
                     return RideStatus.InProgress;
                 case "ENDED":
                     return RideStatus.Ended;
-                case "FAILED":
-                    return RideStatus.Failed;
                 default:
                     return null;
             }
