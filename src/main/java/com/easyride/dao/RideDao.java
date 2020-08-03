@@ -49,6 +49,24 @@ public class RideDao extends BaseDao {
         }
     }
 
+    public static Integer getActiveRideId(User driver) {
+        try {
+            Connection con = getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT id FROM rides where status != 'Ended' AND driverId = ? ORDER BY requestedTimestamp DESC FETCH FIRST 1 ROWS ONLY");
+            statement.setInt(1, driver.getId());
+            ResultSet set = statement.executeQuery();
+
+            if (!set.next()) {
+                return null;
+            }
+            return set.getInt("id");
+
+        } catch (SQLException ex) {
+            return null;
+        }
+
+    }
+
     public static User getNextDriver() {
         try {
             Connection con = getConnection();

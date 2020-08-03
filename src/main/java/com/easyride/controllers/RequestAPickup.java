@@ -112,6 +112,7 @@ public class RequestAPickup extends BaseServlet {
         driverInitialNotif.setData(
                 new Gson().toJson(driverData));
         NotifDao.createNotif(driverInitialNotif);
+        UserDao.setDriverStatus(driver, User.DriverStatus.Enroute);
         
         httpResponse.sendRedirect("/customer/story?id=" + ride.getId());
     }

@@ -40,7 +40,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>NotifService</servlet-name>
-    <url-pattern>/notifs</url-pattern>
+    <url-pattern>/notifs/*</url-pattern>
   </servlet-mapping>
   
      <servlet>

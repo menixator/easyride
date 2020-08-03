@@ -1,6 +1,8 @@
 package com.easyride.notifservice;
 
 import com.easyride.dao.NotifDao;
+import com.easyride.dao.RideDao;
+import com.easyride.dao.UserDao;
 import com.easyride.models.Notif;
 import com.easyride.utils.EasyCabSession;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import javax.ws.rs.core.MediaType;
 public class NotifService {
 
     @GET
-    @Path("/")
+    @Path("/all")
     public NotifResponse getNotifs(@QueryParam("rideId") int rideId,
             @Context HttpServletRequest request) {
 
@@ -43,5 +45,12 @@ public class NotifService {
         NotifResponse response = new NotifResponse();
         response.setNotifs(newNotifs);
         return response;
+    }
+
+    @GET
+    @Path("/activeRideId")
+    public Integer getActiveRide(@Context HttpServletRequest request) {
+        EasyCabSession session = (EasyCabSession) request.getSession(false).getAttribute(EasyCabSession.ATTR_NAME);
+        return RideDao.getActiveRideId(session.getUser());
     }
 }
