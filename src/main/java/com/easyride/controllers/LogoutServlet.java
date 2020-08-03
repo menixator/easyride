@@ -1,5 +1,7 @@
 package com.easyride.controllers;
 
+import com.easyride.dao.UserDao;
+import com.easyride.models.User;
 import com.easyride.utils.EasyCabSession;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author a2-miljau
  */
-public class LogoutServlet extends HttpServlet {
+public class LogoutServlet extends BaseServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -24,19 +26,27 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        httpRequest.removeAttribute(EasyCabSession.ATTR_NAME);
-        ((HttpServletResponse) response).sendRedirect("/public/login.jsp");
+        logout(request, response);
 
+    }
+
+    protected void logout(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        EasyCabSession session = getSession(request);
+
+        User driver = session.getUser();
+        if (driver.getType() == User.UserType.Driver) {
+            driver.setDriverStatus(User.DriverStatus.Offline);
+            UserDao.setDriverStatus(driver, User.DriverStatus.Offline);
+        }
+        request.getSession(false).removeAttribute(EasyCabSession.ATTR_NAME);
+        response.sendRedirect("/public/login.jsp");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        httpRequest.removeAttribute(EasyCabSession.ATTR_NAME);
-        ((HttpServletResponse) response).sendRedirect("/public/login.jsp");
-
+        logout(request, response);
     }
 
     /**
