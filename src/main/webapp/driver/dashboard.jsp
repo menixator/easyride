@@ -92,7 +92,7 @@
                                  card.style.visibility = "hidden";
                              } else {
                                  card.style.removeProperty("visibility");
-                                 card.querySelector('a').href="/driver/story?rideId="+xhr.responseText;
+                                 card.querySelector('a').href="/driver/story.jsp?rideId="+xhr.responseText;
                              }
                             setTimeout(checkForActiveRide, 2000); 
                         }
