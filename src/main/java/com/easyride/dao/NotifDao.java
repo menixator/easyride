@@ -40,7 +40,7 @@ public class NotifDao extends BaseDao {
 
         try {
             Connection con = getConnection();
-            PreparedStatement statement = con.prepareStatement("SELECT notif.* FROM notifs notif where notif.rideId = ? ");
+            PreparedStatement statement = con.prepareStatement("SELECT notif.* FROM notifs notif where notif.rideId = ? ORDER BY notif.createdTimestamp ASC");
             statement.setInt(1, rideId);
             ResultSet rs = statement.executeQuery();
 
