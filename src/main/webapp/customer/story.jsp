@@ -168,7 +168,7 @@
                         .forEach((div) => {
                                 document.querySelector("#content").appendChild(div);
                         });
-                setTimeout(refreshStory, 10000);
+                setTimeout(refreshStory, 5000);
         }
 
         function refreshStory() {
