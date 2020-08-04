@@ -65,6 +65,7 @@
             <thead>
                 <tr>
                     <th scope="col">Ride Id</th>
+                    <th scope="col">Requested</th>
                     <th scope="col">Ended</th>
                     <th scope="col">Distance</th>
                     <th scope="col">Fare</th>
@@ -79,6 +80,7 @@
                 <c:forEach var="ride" items="${rides}" >
                     <tr>
                         <td>${ride.getId()}</td>
+                        <td>${ride.getRequestedTimestamp()}</td>
                         <td>${ride.getEndTimestamp()}</td>
                         <td>${ride.getDistance()} km</td>
                         <td>${ride.getFare()}</td>
