@@ -86,12 +86,22 @@
                     </div>
                     <div class="form-group">
                         <label for="fare">Price(MVR)</label>
-                        <input class="form-control" type="text" val="0" name="fare" id="fare">
+                        <input class="form-control" type="text" val="0" id="price" readonly>
                     </div>
 
                     <div class="form-group">
+                        <label for="gst">GST(0.06%)</label>
+                        <input class="form-control" type="text" val="0" id="gst" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gst">Total(MVR)</label>
+                        <input class="form-control" type="text" val="0" id="total" name="fare" readonly>
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="distance">Distance(KM)</label>
-                        <input class="form-control" type="text" val="0" name="distance" id="distance">
+                        <input class="form-control" type="text" val="0" name="distance" id="distance" readonly>
                     </div>
                     <input class="btn btn-primary" type="submit" value="Request a Ride!" disabled id="requestSubmitButton"/>
                 </form>
@@ -171,10 +181,13 @@ function initMapTrue(lat, lng) {
 		document.querySelector("#distance").value = (
 			calculateDistance(directions) / 1000
 		).toFixed(3);
-		document.querySelector("#fare").value = (
-			(calculateDistance(directions) / 1000) *
-			parseFloat(document.querySelector("#pricePerKilometre").value.trim())
+                var price = (calculateDistance(directions) / 1000) *
+			parseFloat(document.querySelector("#pricePerKilometre").value.trim());
+		document.querySelector("#price").value = (
+			price
 		).toFixed(2);
+                document.querySelector("#gst").value=(price*0.06).toFixed(2);
+                document.querySelector("#total").value=((price*0.06)+price).toFixed(2);
 	});
 }
 
