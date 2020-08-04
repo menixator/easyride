@@ -49,20 +49,37 @@ public class RideDao extends BaseDao {
         }
     }
 
+    public static int getTotalCustomersServed(int driverId) {
+        try {
+            Connection con = getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT COUNT(*) AS CNT FROM rides WHERE driverId = ? and CAST(requestedTimestamp AS DATE)= CURRENT_DATE");
+            statement.setInt(1, driverId);
+            ResultSet rs = statement.executeQuery();
+
+            if (!rs.next()) {
+
+                return 0;
+            }
+            return rs.getInt("CNT");
+        } catch (SQLException ex) {
+            return 0;
+        }
+    }
+
     public static Ride getRide(int id) {
         try {
             Connection con = getConnection();
             // Only one row will be returned because there is a unique constraint on email.
             PreparedStatement statement = con.prepareStatement("SELECT * FROM rides where id = ?");
             statement.setInt(1, id);
-            
+
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 return Ride.fromResultSet(rs);
             }
             return null;
         } catch (SQLException ex) {
-            System.out.println("a"+ ex.toString());
+            System.out.println("a" + ex.toString());
             return null;
         }
     }

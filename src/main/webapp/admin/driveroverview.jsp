@@ -22,7 +22,31 @@
     </head>
     <body>
         <%@ include file="../WEB-INF/adminnavbar.jsp"%>
-
+        <%
+            Integer userId;
+            try {
+                userId = Integer.parseInt(request.getParameter("userId"));
+            } catch (NumberFormatException err) {
+                userId = 0;
+            }
+            if (userId == null) {
+                userId = 0;
+            }
+            ArrayList<Ride> rides = UserDao.getRidesForToday(userId);
+            session.setAttribute("rides", rides);
+        %>
+      <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Earnings for the Day</h5>
+                <p class="card-text">MVR <%=UserDao.getEarningsForTheDay(userId)%></p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Number of Customers Served</h5>
+                <p class="card-text"><%=RideDao.getTotalCustomersServed(userId)%></p>
+            </div>
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -37,19 +61,7 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                    Integer userId;
-                    try {
-                        userId = Integer.parseInt(request.getParameter("userId"));
-                    } catch (NumberFormatException err) {
-                        userId = 0;
-                    }
-                    if (userId == null) {
-                        userId = 0;
-                    }
-                    ArrayList<Ride> rides = UserDao.getRidesForToday(userId);
-                    session.setAttribute("rides", rides);
-                %>
+                
                 <c:forEach var="ride" items="${rides}" >
                     <tr>
                         <td>${ride.getId()}</td>
