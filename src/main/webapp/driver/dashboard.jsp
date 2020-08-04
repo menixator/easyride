@@ -52,10 +52,10 @@
         <form>
             <div class="form-group">
                 <label for="driverStatus">Driver Status</label>
-                <select class="form-control" name="driverStatus" id="driverStatus">
-                    <option value="Busy" <%= driverStatus == "Busy" ? "selected" : ""%>>Busy</option>
-                    <option value="Available" <%= driverStatus == "Available" ? "selected" : ""%>>Available</option>
-                    <option value="Offline" <%= driverStatus == "Offline" ? "selected" : ""%>>Offline</option>
+                <select class="form-control" name="driverStatus" id="driverStatus" disabled>
+                    <option value="Busy">Busy</option>
+                    <option value="Available">Available</option>
+                    <option value="Offline">Offline</option>
                 </select>
             </div>
         </form> 
@@ -69,17 +69,40 @@
                 <script type="text/javascript">
 
                    var driverStatus = document.querySelector("#driverStatus");
-            
+                   var changingStatus = false;
+                   function checkStatus(){
+                        var xhr = new XMLHttpRequest();
+                     xhr.open("GET", "/driver/status", true);
+                     xhr.setRequestHeader("content-type","application/json");
+                     xhr.onreadystatechange  = function(){
+                         if (xhr.readyState === XMLHttpRequest.DONE ) {
+                             if (xhr.responseText == "Enroute"){
+                                driverStatus.disabled = true;
+                             } else if(!changingStatus) {
+                                 driverStatus.disabled = false;
+                                 var opt = [].slice.call(driverStatus.children).findIndex(child => child.value == xhr.responseText);
+                                 if (opt >= 0){
+                                     driverStatus.selectedIndex = opt;
+                                 }
+                             }
+                             setTimeout(checkStatus, 3000);
+                         }
+                         
+                     }
+                     xhr.send();
+                   }
+                   checkStatus();
                     driverStatus.addEventListener("change",function(){
                        console.log('onchange called');
                      var selectedStatus = driverStatus.children[driverStatus.selectedIndex].value;
-                     
+                     changingStatus = true;
                      var xhr = new XMLHttpRequest();
                      xhr.open("POST", "/driver/status/" + selectedStatus, true);
                      xhr.setRequestHeader("content-type","application/json");
                      xhr.onreadystatechange  = function(){
                          if (xhr.readyState === XMLHttpRequest.DONE) {
                              driverStatus.disabled = false;
+                             changingStatus = false;
                          }
                      }
                      driverStatus.disabled = true;

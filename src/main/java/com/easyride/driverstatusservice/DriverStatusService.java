@@ -34,7 +34,7 @@ public class DriverStatusService {
         // Session creation
         HttpSession session = request.getSession(false);
         EasyCabSession easyCabSession = (EasyCabSession) session.getAttribute(EasyCabSession.ATTR_NAME);
-        return easyCabSession.getUser().getDriverStatus().toString();
+        return UserDao.getUserByEmail(easyCabSession.getUser().getEmail()).getDriverStatus().toString();
     }
 
     @POST
