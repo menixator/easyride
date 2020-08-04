@@ -11,3 +11,5 @@ EasyRide is a Java EE web application made as part of UFCF85-30-3 Enterprise Sys
     - Username: `driver@easyride` password: `driver`
     - Username: `customer@easyride` password: `customer`
 - Run the application
+
+The code is hosted at [https://github.com/menixator/easyride](https://github.com/menixator/easyride)
