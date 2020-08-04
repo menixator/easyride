@@ -1,6 +1,6 @@
-DROP TABLE notifs;
-DROP TABLE rides;
-DROP TABLE users;
+-- DROP TABLE notifs;
+-- DROP TABLE rides;
+-- DROP TABLE users;
 
 
 CREATE TABLE users(
