@@ -17,6 +17,10 @@
         <servlet-class>com.easyride.controllers.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>RegisterAdminServlet</servlet-name>
+        <servlet-class>com.easyride.controllers.RegisterAdminServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.easyride.controllers.LogoutServlet</servlet-class>
     </servlet>
@@ -30,36 +34,40 @@
     </servlet>
     
     <servlet>
-    <servlet-name>NotifService</servlet-name>
-    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-    <init-param>
-      <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>com.easyride.notifservice</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>NotifService</servlet-name>
-    <url-pattern>/notifs/*</url-pattern>
-  </servlet-mapping>
+        <servlet-name>NotifService</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>com.easyride.notifservice</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NotifService</servlet-name>
+        <url-pattern>/notifs/*</url-pattern>
+    </servlet-mapping>
   
-     <servlet>
-    <servlet-name>DriverStatusService</servlet-name>
-    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-    <init-param>
-      <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>com.easyride.driverstatusservice</param-value>
-    </init-param>
-    <load-on-startup>2</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DriverStatusService</servlet-name>
-    <url-pattern>/driver/status/*</url-pattern>
-  </servlet-mapping>
+    <servlet>
+        <servlet-name>DriverStatusService</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>com.easyride.driverstatusservice</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DriverStatusService</servlet-name>
+        <url-pattern>/driver/status/*</url-pattern>
+    </servlet-mapping>
   
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/public/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterAdminServlet</servlet-name>
+        <url-pattern>/admin/registeradmin</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>

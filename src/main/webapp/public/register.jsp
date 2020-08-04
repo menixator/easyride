@@ -41,7 +41,7 @@
 
                 </c:if>
             </div>
-            <form method="POST" action="/public/register">
+            <form id="mainForm" method="POST" action="<%=((String)session.getAttribute("postPath")) == null ? "/public/register" : (String)session.getAttribute("postPath")%>">
                 <h4 class="card-title mt-3 text-center">Create an Account</h4>
 
                 <div class="form-group input-group">
@@ -80,7 +80,6 @@
                 </div> <!-- form-group// -->      
                 <p class="text-center">Have an account? <a href="/public/login">Log In</a> </p>                                                                 
             </form>
-
         </div> 
 
     </body>

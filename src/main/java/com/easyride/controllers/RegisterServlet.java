@@ -26,7 +26,8 @@ public class RegisterServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("/public/register.jsp");
+        request.getSession().setAttribute("postPath", "/public/register");
+        request.getRequestDispatcher("/public/register.jsp").forward(request, response);
     }
 
     protected User validateUser(HttpServletRequest request, User.UserType type) {
@@ -107,6 +108,7 @@ public class RegisterServlet extends BaseServlet {
         if (user != null) {
             persistUser(request, user);
         }
+        request.getSession().setAttribute("postPath", "/public/register");
         request.getRequestDispatcher("/public/register.jsp").forward(request, response);
     }
 
