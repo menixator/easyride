@@ -41,6 +41,7 @@
                     <th scope="col">Ended</th>
                     <th scope="col">Distance</th>
                     <th scope="col">Fare</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Story</th>
                 </tr>
             </thead>
@@ -56,6 +57,7 @@
                         <td>${ride.getEndTimestamp()}</td>
                         <td>${ride.getDistance()} km</td>
                         <td>${ride.getFare()}</td>
+                        <td>${ride.getStatus()}</td>
                         <td><a href="/driver/story.jsp?rideId=${ride.getId()}">View Story</a></td>
                     </tr>
                 </c:forEach>

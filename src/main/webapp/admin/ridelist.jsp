@@ -31,6 +31,7 @@
                     <th scope="col">Ended</th>
                     <th scope="col">Distance</th>
                     <th scope="col">Fare</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Driver Overview</th>
                     <th scope="col">Driver Story</th>
                     <th scope="col">User Story</th>
@@ -39,7 +40,7 @@
             <tbody>
                 <%
 
-                    ArrayList<Ride> rides = UserDao.getRides();
+                    ArrayList<Ride> rides = UserDao.getAllRidesForToday();
                     session.setAttribute("rides", rides);
                 %>
                 <c:forEach var="ride" items="${rides}" >
@@ -49,6 +50,7 @@
                         <td>${ride.getEndTimestamp()}</td>
                         <td>${ride.getDistance()} km</td>
                         <td>${ride.getFare()}</td>
+                        <td>${ride.getStatus()}</td>
                         <td><a href="/admin/driveroverview.jsp?userId=${ride.getDriverId()}">View Driver Overview</a></td>
                         <td><a href="/driver/story.jsp?rideId=${ride.getId()}">View Driver Story</a></td>
                         <td><a href="/customer/story.jsp?rideId=${ride.getId()}">View Customer Story</a></td>

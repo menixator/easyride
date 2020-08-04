@@ -95,11 +95,11 @@ public class UserDao extends BaseDao {
         }
     }
 
-    public static ArrayList<Ride> getRides() {
+    public static ArrayList<Ride> getAllRidesForToday() {
         try {
             Connection con = getConnection();
             ArrayList<Ride> rides = new ArrayList<>();
-            PreparedStatement statement = con.prepareStatement("SELECT * from rides");
+            PreparedStatement statement = con.prepareStatement("SELECT * from rides where CAST(requestedTimestamp AS DATE)= CURRENT_DATE");
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
