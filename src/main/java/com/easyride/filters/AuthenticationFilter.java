@@ -49,10 +49,16 @@ public class AuthenticationFilter implements Filter {
             httpResponse.sendRedirect("/public/login.jsp");
             return;
         }
-
+        if (appSession.getUserType() == EasyCabSession.SessionUserType.Admin && httpRequest.getRequestURI().startsWith("/driver") && !httpRequest.getRequestURI().startsWith("/driver/story.jsp")) {
+            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         // If the user is requesting the login page, ignore the filter.
         if (httpRequest.getRequestURI().startsWith("/public")) {
             chain.doFilter(request, response);
+            return;
+        } else if (httpRequest.getRequestURI().startsWith("/notif") && (appSession.getUserType() == EasyCabSession.SessionUserType.Anonymous)) {
+            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         } else if (httpRequest.getRequestURI().startsWith("/admin") && !(appSession.getUserType() == EasyCabSession.SessionUserType.Admin)) {
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);

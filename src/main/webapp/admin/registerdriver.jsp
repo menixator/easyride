@@ -23,8 +23,6 @@
         </style>
     </head>
     <body>
-
-
         <div id="container">
             <div id="alerts">
                 <c:if test="${errors != null && errors.size() > 0}">

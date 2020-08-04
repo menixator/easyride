@@ -9,10 +9,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <%
-        EasyCabSession appSession = (EasyCabSession) session.getAttribute(EasyCabSession.ATTR_NAME);
-        User user = appSession.getUser();
-    %> 
     <head>
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
@@ -55,33 +51,14 @@
         </style>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex">
-            <div class="d-flex flex-grow-1">
-                <span class="w-100 d-lg-none d-block"></span>
-                <a class="navbar-brand d-none d-lg-inline-block" href="#">
-                    EasyRide
-                </a>
-            </div>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/customer/request-a-pickup.jsp">Request A Pickup<span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-            <div class="collapse navbar-collapse text-right align-items-end flex-column">
-                <div class="d-flex">
-                    <span class="navbar-text pr-2">
-                        Logged in as <%=user.getName()%>
-                    </span>
-
-                    <form class="form-inline my-2 my-lg-0" method="POST" action="/logout">
-                        <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
-                    </form>
-                </div>
-
-            </div> 
-        </nav>
+        <%
+            EasyCabSession appSession = (EasyCabSession) session.getAttribute(EasyCabSession.ATTR_NAME);
+            User user = appSession.getUser();
+            String banner = user.getType() == User.UserType.Admin ? "../WEB-INF/adminnavbar.jsp" : "../WEB-INF/customernavbar.jsp";
+        %> 
+        <jsp:include page="<%=banner%>" ></jsp:include>
         <div id="container">
-            
+
             <div id="content">
                 <div id="invalidRideId" class="alert alert-danger" role="alert" style="visibility: hidden">
                     The provided Ride identifier is invalid.
@@ -89,97 +66,124 @@
             </div>
         </div>
         <script type="text/javascript">
-            var match = document.location.search.match(/rideId=(\d+)/);
-            var rideId;
-            if (match){
+        var match = document.location.search.match(/rideId=(\d+)/);
+        var rideId;
+        if (match) {
                 rideId = parseInt(match[1]);
-            } else {
+        } else {
                 document.querySelector("#invalidRideId").style.removeProperty("visibility");
-            }
-            
-            function updateStory(story){
-                if (story.errors.length > 0 ){
-                    story.errors.map(error => {
-                        var div = document.createElement('div');
-                        div.className = "alert alert-danger";
-                        div.textContent = error;
-                        return div;
-                    }).forEach(errorDiv => {
-                        document.querySelector("#content").appendChild(errorDiv);
-                    });
-                }
-                (story.notifs|| []).filter(notif => !!~["CustomerInitialNotif", "InProgressNotif", "WaitingForCustomerToEnterNotif", "RideEndedNotif"].indexOf(notif.type)).filter(notif => {
-                    return [].slice.call(document.querySelector("#content").children).findIndex(child => child.getAttribute('data-id') == notif.id.toString()) == -1;
-                }).map(notif => {
+        }
 
-                    switch(notif.type){
-                          case "RideEndedNotif": {
-                           var div = document.createElement('div');
-                           div.setAttribute('data-id', notif.id);
-                           div.className = "alert alert-info";
-                           div.textContent = "Hope you had a good ride!";
-                            return div;
-                        }
-                        case "CustomerInitialNotif":
-                            //{'driverName': 'driver', 'vehicalRegistrationNumber': '000'}
-                           var data = JSON.parse(notif.data);
-                           var div = document.createElement('div');
-                           div.setAttribute('data-id', notif.id);
-                           div.className = "alert alert-info";
-                           div.textContent = "You driver " + data.driverName + " will be picking you up in their vehical with the registration number: " + data.vehicalRegisitrationNumber;
-                            return div;
-                        case "InProgressNotif":
-                           var div = document.createElement('div');
-                           div.setAttribute('data-id', notif.id);
-                           div.className = "alert alert-info";
-                           div.textContent = "Enjoy the ride!";
-                            return div;
-                            
-                        case "WaitingForCustomerToEnterNotif":
-                            //{'driverName': 'driver', 'vehicalRegistrationNumber': '000'}
-                           var data = JSON.parse(notif.data);
-                           var div = document.createElement('div');
-                           div.setAttribute('data-id', notif.id);
-                           div.className = "alert alert-info";
-                           var span = document.createElement("span");
-                            div.appendChild(span);
-                            span.textContent = "Your driver is here!" ;
-                           if (story.currentRideStatus == "WaitingForCustomerToEnter"){
-                                var nextButton = document.createElement("button");
-                                nextButton.className = "btn btn-primary mt-3";
-                                nextButton.style.width = "100%";
-                                nextButton.textContent = "I have Entered/am Entering!";
-                                nextButton.addEventListener("click", function(event){
-                                    event.target.remove();
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open("GET", "/notifs/setRideStatus?rideId=" + rideId.toString() + "&nextStatus=InProgress" , true);
-                                    xhr.setRequestHeader("content-type", "application/json");
-                                    xhr.send();
+        function updateStory(story) {
+                if (story.errors.length > 0) {
+                        story.errors
+                                .map((error) => {
+                                        var div = document.createElement("div");
+                                        div.className = "alert alert-danger";
+                                        div.textContent = error;
+                                        return div;
                                 })
-                                div.appendChild(nextButton);
-                            }
-                            return div;
-                            
-                    default: return null;
-                    }
-                }).filter(div => div != null).forEach(div => {;
-                    document.querySelector("#content").appendChild(div);
-                });
+                                .forEach((errorDiv) => {
+                                        document.querySelector("#content").appendChild(errorDiv);
+                                });
+                }
+                (story.notifs || [])
+                        .filter(
+                                (notif) =>
+                                        !!~[
+                                                "CustomerInitialNotif",
+                                                "InProgressNotif",
+                                                "WaitingForCustomerToEnterNotif",
+                                                "RideEndedNotif",
+                                        ].indexOf(notif.type)
+                        )
+                        .filter((notif) => {
+                                return (
+                                        [].slice
+                                                .call(document.querySelector("#content").children)
+                                                .findIndex((child) => child.getAttribute("data-id") == notif.id.toString()) ==
+                                        -1
+                                );
+                        })
+                        .map((notif) => {
+                                switch (notif.type) {
+                                        case "RideEndedNotif": {
+                                                var div = document.createElement("div");
+                                                div.setAttribute("data-id", notif.id);
+                                                div.className = "alert alert-info";
+                                                div.textContent = "Hope you had a good ride!";
+                                                return div;
+                                        }
+                                        case "CustomerInitialNotif":
+                                                //{'driverName': 'driver', 'vehicalRegistrationNumber': '000'}
+                                                var data = JSON.parse(notif.data);
+                                                var div = document.createElement("div");
+                                                div.setAttribute("data-id", notif.id);
+                                                div.className = "alert alert-info";
+                                                div.textContent =
+                                                        "You driver " +
+                                                        data.driverName +
+                                                        " will be picking you up in their vehical with the registration number: " +
+                                                        data.vehicalRegisitrationNumber;
+                                                return div;
+                                        case "InProgressNotif":
+                                                var div = document.createElement("div");
+                                                div.setAttribute("data-id", notif.id);
+                                                div.className = "alert alert-info";
+                                                div.textContent = "Enjoy the ride!";
+                                                return div;
+                                        case "WaitingForCustomerToEnterNotif":
+                                                //{'driverName': 'driver', 'vehicalRegistrationNumber': '000'}
+                                                var data = JSON.parse(notif.data);
+                                                var div = document.createElement("div");
+                                                div.setAttribute("data-id", notif.id);
+                                                div.className = "alert alert-info";
+                                                var span = document.createElement("span");
+                                                div.appendChild(span);
+                                                span.textContent = "Your driver is here!";
+                                                if (story.currentRideStatus == "WaitingForCustomerToEnter") {
+                                                        var nextButton = document.createElement("button");
+                                                        nextButton.className = "btn btn-primary mt-3";
+                                                        nextButton.style.width = "100%";
+                                                        nextButton.textContent = "I have Entered/am Entering!";
+                                                        nextButton.addEventListener("click", function (event) {
+                                                                event.target.remove();
+                                                                var xhr = new XMLHttpRequest();
+                                                                xhr.open(
+                                                                        "GET",
+                                                                        "/notifs/setRideStatus?rideId=" + rideId.toString() + "&nextStatus=InProgress",
+                                                                        true
+                                                                );
+                                                                xhr.setRequestHeader("content-type", "application/json");
+                                                                xhr.send();
+                                                        });
+                                                        div.appendChild(nextButton);
+                                                }
+                                                return div;
+                                        default:
+                                                return null;
+                                }
+                        })
+                        .filter((div) => div != null)
+                        .forEach((div) => {
+                                document.querySelector("#content").appendChild(div);
+                        });
                 setTimeout(refreshStory, 10000);
-            }
-            
-            function refreshStory(){
+        }
+
+        function refreshStory() {
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", "/notifs/all?rideId=" + rideId, true);
-                xhr.setRequestHeader("content-type","application/json");
-                xhr.onreadystatechange  = function(){
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        updateStory(JSON.parse(xhr.responseText));
-                    }
-                }
+                xhr.setRequestHeader("content-type", "application/json");
+                xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                                updateStory(JSON.parse(xhr.responseText));
+                        }
+                };
                 xhr.send();
-            }
-            refreshStory();
+        }
+        refreshStory();
+
         </script>
     </body>
 </html>
