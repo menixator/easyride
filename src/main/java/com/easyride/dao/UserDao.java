@@ -12,6 +12,25 @@ import java.sql.SQLException;
  */
 public class UserDao extends BaseDao {
 
+    public static String getEarningsForTheDay(int driverId) {
+        try {
+            Connection con = getConnection();
+            // Only one row will be returned because there is a unique constraint on email.
+            PreparedStatement statement = con.prepareStatement("SELECT CASE WHEN sum(fare) IS NULL THEN CAST(0 AS DOUBLE) ELSE sum(fare) END as fare from rides where driverId = ? and CAST(endTimestamp AS DATE)= CURRENT_DATE");
+            statement.setInt(1, driverId);
+            ResultSet rs = statement.executeQuery();
+
+            if (!rs.next()) {
+                return "0";
+            }
+            
+            return String.format("%.2f", rs.getDouble(1));
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            return "0";
+        }
+    }
+
     public static User getUserByEmail(String email) {
         try {
             Connection con = getConnection();
