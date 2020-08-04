@@ -1,10 +1,12 @@
 package com.easyride.dao;
 
+import com.easyride.models.Ride;
 import com.easyride.models.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -28,6 +30,24 @@ public class UserDao extends BaseDao {
         } catch (SQLException ex) {
             System.out.println(ex.toString());
             return "0";
+        }
+    }
+
+      public static ArrayList<Ride> getRidesForToday(int driverId) {
+        try {
+            Connection con = getConnection();
+            ArrayList<Ride> rides = new ArrayList<>();
+            PreparedStatement statement = con.prepareStatement("SELECT * from rides where driverId = ? and CAST(endTimestamp AS DATE)= CURRENT_DATE");
+            statement.setInt(1, driverId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                rides.add(Ride.fromResultSet(rs));
+            }
+            
+            return rides;
+        } catch (SQLException ex) {
+            return null;
         }
     }
 
