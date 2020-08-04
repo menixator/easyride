@@ -36,7 +36,7 @@ public class AuthenticationFilter implements Filter {
         if (session == null || session.getAttribute(EasyCabSession.ATTR_NAME) == null) {
             session = httpRequest.getSession(true);
             // Timeout in 30 minutes.
-            session.setMaxInactiveInterval(30 * 60);
+            session.setMaxInactiveInterval(20 * 60);
             appSession = new EasyCabSession();
 
             session.setAttribute(EasyCabSession.ATTR_NAME, appSession);

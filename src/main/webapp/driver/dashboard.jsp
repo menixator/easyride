@@ -56,7 +56,7 @@
                             driverStatus.disabled = true;
                         } else if (!changingStatus) {
                             driverStatus.disabled = false;
-                            var opt = [].slice.call(driverStatus.children).findIndex(child = > child.value == xhr.responseText);
+                            var opt = [].slice.call(driverStatus.children).findIndex(child => child.value == xhr.responseText);
                             if (opt >= 0) {
                                 driverStatus.selectedIndex = opt;
                             }

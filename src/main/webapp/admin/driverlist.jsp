@@ -52,7 +52,7 @@
             </tbody>
         </table>
         <script type="text/javascript">
-            [].slice.call(document.querySelectorAll(".delete-button")).forEach(button = > {
+            [].slice.call(document.querySelectorAll(".delete-button")).forEach(button => {
 
             button.addEventListener("click", function (event) {
             if (confirm("Are you sure you want to delete this user?")) {
