@@ -16,7 +16,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin List | EasyRide </title>
+        <title>Driver Overview | EasyRide </title>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
     </head>
@@ -66,43 +66,45 @@
             </div> 
         </nav>
 
-        <table class="table" id="admins">
+        <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">User Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Delete</th>
+                    <th scope="col">Ride Id</th>
+                    <th scope="col">Requested</th>
+                    <th scope="col">Ended</th>
+                    <th scope="col">Distance</th>
+                    <th scope="col">Fare</th>
+                    <th scope="col">Driver Story</th>
+                    <th scope="col">User Story</th>
                 </tr>
             </thead>
             <tbody>
                 <%
-                    ArrayList<User> users = UserDao.getAdminList(user.getId());
-                    session.setAttribute("users", users);
+                    Integer userId;
+                    try {
+                        userId = Integer.parseInt(request.getParameter("userId"));
+                    } catch (NumberFormatException err) {
+                        userId = 0;
+                    }
+                    if (userId == null) {
+                        userId = 0;
+                    }
+                    ArrayList<Ride> rides = UserDao.getRidesForDriver(userId);
+                    session.setAttribute("rides", rides);
                 %>
-                <c:forEach var="user" items="${users}" >
+                <c:forEach var="ride" items="${rides}" >
                     <tr>
-                        <td>${user.getId()}</td>
-                        <td>${user.getName()}</td>
-                        <td>${user.getEmail()}</td>
-                        <td><button data-id="${user.getId()}" class="btn btn-danger delete-button">Delete</button></td>
+                        <td>${ride.getId()}</td>
+                        <td>${ride.getRequestedTimestamp()}</td>
+                        <td>${ride.getEndTimestamp()}</td>
+                        <td>${ride.getDistance()} km</td>
+                        <td>${ride.getFare()}</td>
+                        <td><a href="/driver/story.jsp?rideId=${ride.getId()}">View Driver Story</a></td>
+                        <td><a href="/customer/story.jsp?rideId=${ride.getId()}">View Customer Story</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <script type="text/javascript">
-            [].slice.call(document.querySelectorAll(".delete-button")).forEach(button = > {
 
-            button.addEventListener("click", function (event) {
-            if (confirm("Are you sure you want to delete this user?")) {
-            event.target.parentElement.parentElement.remove();
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/admin/usermanagement/delete?userId=" + event.target.getAttribute("data-id"), true);
-            xhr.setRequestHeader("content-type", "application/json");
-            xhr.send();
-            }
-            })
-            })
-        </script>
     </body>
 </html>

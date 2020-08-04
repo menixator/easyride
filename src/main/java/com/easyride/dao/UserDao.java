@@ -14,6 +14,68 @@ import java.util.ArrayList;
  */
 public class UserDao extends BaseDao {
 
+    public static void deleteUser(int userId) {
+        try {
+            Connection con = getConnection();
+            PreparedStatement statement = con.prepareStatement("DELETE FROM users where id = ?");
+            statement.setInt(1, userId);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+        }
+    }
+
+    public static ArrayList<User> getAdminList(int excludeUserId) {
+        try {
+            Connection con = getConnection();
+            ArrayList<User> admins = new ArrayList<>();
+            PreparedStatement statement = con.prepareStatement("SELECT * from users where id != ? AND type = 'Admin'");
+            statement.setInt(1, excludeUserId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                admins.add(User.fromResultSet(rs));
+            }
+
+            return admins;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    public static ArrayList<User> getCustomerList() {
+        try {
+            Connection con = getConnection();
+            ArrayList<User> admins = new ArrayList<>();
+            PreparedStatement statement = con.prepareStatement("SELECT * from users where type = 'Customer'");
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                admins.add(User.fromResultSet(rs));
+            }
+
+            return admins;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    public static ArrayList<User> getDriverList() {
+        try {
+            Connection con = getConnection();
+            ArrayList<User> admins = new ArrayList<>();
+            PreparedStatement statement = con.prepareStatement("SELECT * from users where type = 'Driver'");
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                admins.add(User.fromResultSet(rs));
+            }
+
+            return admins;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
     public static String getEarningsForTheDay(int driverId) {
         try {
             Connection con = getConnection();
@@ -25,7 +87,7 @@ public class UserDao extends BaseDao {
             if (!rs.next()) {
                 return "0";
             }
-            
+
             return String.format("%.2f", rs.getDouble(1));
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -33,7 +95,42 @@ public class UserDao extends BaseDao {
         }
     }
 
-      public static ArrayList<Ride> getRidesForToday(int driverId) {
+    public static ArrayList<Ride> getRides() {
+        try {
+            Connection con = getConnection();
+            ArrayList<Ride> rides = new ArrayList<>();
+            PreparedStatement statement = con.prepareStatement("SELECT * from rides");
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                rides.add(Ride.fromResultSet(rs));
+            }
+
+            return rides;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    public static ArrayList<Ride> getRidesForDriver(int driverId) {
+        try {
+            Connection con = getConnection();
+            ArrayList<Ride> rides = new ArrayList<>();
+            PreparedStatement statement = con.prepareStatement("SELECT * from rides where driverId = ?");
+            statement.setInt(1, driverId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                rides.add(Ride.fromResultSet(rs));
+            }
+
+            return rides;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    public static ArrayList<Ride> getRidesForToday(int driverId) {
         try {
             Connection con = getConnection();
             ArrayList<Ride> rides = new ArrayList<>();
@@ -44,7 +141,7 @@ public class UserDao extends BaseDao {
             while (rs.next()) {
                 rides.add(Ride.fromResultSet(rs));
             }
-            
+
             return rides;
         } catch (SQLException ex) {
             return null;

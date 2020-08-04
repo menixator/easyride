@@ -56,6 +56,19 @@
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>UserManagementService</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>com.easyride.usermanagementservice</param-value>
+        </init-param>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserManagementService</servlet-name>
+        <url-pattern>/admin/usermanagement/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DriverStatusService</servlet-name>
         <url-pattern>/driver/status/*</url-pattern>
