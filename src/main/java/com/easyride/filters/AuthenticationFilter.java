@@ -45,13 +45,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         // If the user is logged in and tries to get to the login page again, redirect to the index page.
-        if (appSession.getUserType() == EasyCabSession.SessionUserType.Anonymous && httpRequest.getRequestURI().equals("/public/index.jsp")) {
-            httpResponse.sendRedirect("/public/login.jsp");
-            return;
-        }
-
-        // If the user is logged in and tries to get to the login page again, redirect to the index page.
-        if (appSession.getUserType() == EasyCabSession.SessionUserType.Anonymous && httpRequest.getRequestURI().equals("/public/index.jsp")) {
+        if (appSession.getUserType() == EasyCabSession.SessionUserType.Anonymous && httpRequest.getRequestURI().equals("/")) {
             httpResponse.sendRedirect("/public/login.jsp");
             return;
         }
@@ -60,16 +54,13 @@ public class AuthenticationFilter implements Filter {
         if (httpRequest.getRequestURI().startsWith("/public")) {
             chain.doFilter(request, response);
             return;
-        } else if (httpRequest.getRequestURI().startsWith("/customer") && appSession.getUserType() == EasyCabSession.SessionUserType.Anonymous) {
+        } else if (httpRequest.getRequestURI().startsWith("/admin") && !(appSession.getUserType() == EasyCabSession.SessionUserType.Admin)) {
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
-        } else if (httpRequest.getRequestURI().startsWith("/admin") && appSession.getUserType() != EasyCabSession.SessionUserType.Admin) {
+        } else if (httpRequest.getRequestURI().startsWith("/driver") && !(appSession.getUserType() == EasyCabSession.SessionUserType.Admin || appSession.getUserType() == EasyCabSession.SessionUserType.Driver)) {
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
-        } else if (httpRequest.getRequestURI().startsWith("/driver") && appSession.getUserType() != EasyCabSession.SessionUserType.Driver) {
-            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        } else if (httpRequest.getRequestURI().startsWith("/customer") && appSession.getUserType() != EasyCabSession.SessionUserType.Customer) {
+        } else if (httpRequest.getRequestURI().startsWith("/customer") && !(appSession.getUserType() == EasyCabSession.SessionUserType.Admin || appSession.getUserType() == EasyCabSession.SessionUserType.Customer)) {
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         } else {

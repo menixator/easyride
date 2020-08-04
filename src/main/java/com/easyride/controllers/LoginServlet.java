@@ -31,8 +31,20 @@ public class LoginServlet extends BaseServlet {
         if (session.getUserType() == EasyCabSession.SessionUserType.Anonymous) {
             response.sendRedirect("/public/login.jsp");
         } else {
-            // Otherwise, redirect to the index page.
-            response.sendRedirect("/index.jsp");
+            User user = session.getUser();
+            if (null != user.getType()) {
+                switch (user.getType()) {
+                    case Driver:
+                        ((HttpServletResponse) response).sendRedirect("/driver/dashboard.jsp");
+                        break;
+                    case Customer:
+                        ((HttpServletResponse) response).sendRedirect("/customer/request-a-pickup.jsp");
+                        break;
+                    default:
+                        ((HttpServletResponse) response).sendRedirect("/admin/ridelist.jsp");
+                        break;
+                }
+            }
         }
     }
 
@@ -64,12 +76,18 @@ public class LoginServlet extends BaseServlet {
         if (user.verifyHash(password)) {
             getSession(request).setUserType(EasyCabSession.SessionUserType.fromUserType(user.getType()));
             getSession(request).setUser(user);
-            if (user.getType() == User.UserType.Driver) {
-                ((HttpServletResponse) response).sendRedirect("/driver/dashboard.jsp");
-            } else if (user.getType() == User.UserType.Customer) {
-                ((HttpServletResponse) response).sendRedirect("/customer/request-a-pickup.jsp");
-            } else {
-                ((HttpServletResponse) response).sendRedirect("/index.jsp");
+            if (null != user.getType()) {
+                switch (user.getType()) {
+                    case Driver:
+                        ((HttpServletResponse) response).sendRedirect("/driver/dashboard.jsp");
+                        break;
+                    case Customer:
+                        ((HttpServletResponse) response).sendRedirect("/customer/request-a-pickup.jsp");
+                        break;
+                    default:
+                        ((HttpServletResponse) response).sendRedirect("/admin/ridelist.jsp");
+                        break;
+                }
             }
         } else {
 
