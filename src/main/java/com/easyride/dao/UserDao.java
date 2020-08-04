@@ -134,7 +134,7 @@ public class UserDao extends BaseDao {
         try {
             Connection con = getConnection();
             ArrayList<Ride> rides = new ArrayList<>();
-            PreparedStatement statement = con.prepareStatement("SELECT * from rides where driverId = ? and CAST(endTimestamp AS DATE)= CURRENT_DATE");
+            PreparedStatement statement = con.prepareStatement("SELECT * from rides where driverId = ? and CAST(requestedTimestamp AS DATE)= CURRENT_DATE");
             statement.setInt(1, driverId);
             ResultSet rs = statement.executeQuery();
 
